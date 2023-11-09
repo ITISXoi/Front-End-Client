@@ -26,7 +26,7 @@ export const HomePage: PageComponent = () => {
       <LiveAuctionModal />
     </>
   );
-};
+}
 
 HomePage.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;

@@ -5,6 +5,7 @@ import Head from "next/head";
 import { ReactElement, ReactNode, useState } from "react";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { Rubik, Urbanist } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 
@@ -45,6 +46,7 @@ function App(props: AppProps) {
           {getLayout(<Component {...pageProps} />)}
         </Hydrate>
       </QueryClientProvider>
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 }
