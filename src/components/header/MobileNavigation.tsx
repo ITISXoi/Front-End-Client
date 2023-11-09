@@ -21,12 +21,9 @@ export default function MobileNavigation() {
           <Menu className="mobile__menu__item">
             <div className="mobile__menu__logo">
               <Link href="/">
-                <Image
-                  src="/assets/images/logo/logo.png"
-                  height={100}
-                  width={100}
-                  alt="logo"
-                />
+                <h1 className="heading" style={{ color: "white" }}>
+                  NFTs
+                </h1>
               </Link>
             </div>
             {navigation.map((item) => (

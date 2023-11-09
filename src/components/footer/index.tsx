@@ -19,17 +19,12 @@ export default function Footer() {
               <div className="widget widget-logo">
                 <div className="logo-footer" id="logo-footer">
                   <Link href="/">
-                    <Image
-                      id="logo_footer"
-                      // src="/assets/images/logo/logo_dark.png"
-                      src={`/assets/images/logo/${
-                        isDark ? "logo_dark" : "logo2"
-                      }.png`}
-                      alt="nft-gaming"
-                      width={135}
-                      height={56}
-                      data-retina="assets/images/logo/logo_dark@2x.png"
-                    />
+                    <h1
+                      className="heading"
+                      style={{ color: `${isDark ? "white" : "black"}` }}
+                    >
+                      NFTs
+                    </h1>
                   </Link>
                 </div>
                 <p className="sub-widget-logo">
@@ -43,7 +38,7 @@ export default function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    ib-themes
+                    Cuong
                   </a>
                 </p>
               </div>

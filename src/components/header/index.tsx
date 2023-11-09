@@ -51,15 +51,9 @@ export default function Header(): JSX.Element {
                   <div id="site-logo" className="clearfix">
                     <div id="site-logo-inner">
                       <Link href="/" rel="home" className="main-logo">
-                        <Image
-                          id="logo_header"
-                          src={`/assets/images/logo/${
-                            isDark ? "logo_dark" : "logo"
-                          }.png`}
-                          alt="nft-gaming"
-                          width={133}
-                          height={56}
-                        />
+                        <h1 className="heading" style={{ color: "white" }}>
+                          NFTs
+                        </h1>
                       </Link>
                     </div>
                   </div>

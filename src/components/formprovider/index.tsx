@@ -20,7 +20,7 @@ const FormWrapper = <TFormValue extends FieldValues>({
 }: Props<TFormValue>) => {
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)} {...props}>
+      <form onSubmit={methods.handleSubmit(onSubmit)} {...props} noValidate>
         {children}
       </form>
     </FormProvider>
