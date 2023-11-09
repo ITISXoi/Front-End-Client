@@ -1,7 +1,7 @@
-import { HomePage } from "@/modules/HomePage";
+import { SignupPage } from "@/modules/SingupPage";
 import { GetStaticPropsContext } from "next";
 
-export default HomePage;
+export default SignupPage;
 
 export const getStaticProps = async (ctx: GetStaticPropsContext) => {
   return {

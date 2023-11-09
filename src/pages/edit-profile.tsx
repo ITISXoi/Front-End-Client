@@ -1,7 +1,7 @@
-import { HomePage } from "@/modules/HomePage";
+import { EditProfilePage } from "@/modules/EditProfilePage";
 import { GetStaticPropsContext } from "next";
 
-export default HomePage;
+export default EditProfilePage;
 
 export const getStaticProps = async (ctx: GetStaticPropsContext) => {
   return {
