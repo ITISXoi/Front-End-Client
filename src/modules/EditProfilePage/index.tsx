@@ -1,25 +1,14 @@
-import { Metadata } from "next";
-import LiveAuction from "@/components/block/LiveAuction";
-import PopularCollection from "@/components/block/PopularCollection";
-import TopSeller from "@/components/block/TopSeller";
-import Hero1 from "@/components/hero/Hero1";
-import LiveAuctionModal from "@/components/modal/LiveAuctionModal";
-import TodaysPicks from "@/components/block/TodaysPicks";
-import CreateSellNft from "@/components/block/CreateSellNft";
-import Layout from "@/layout";
-import Breadcrumb from "@/components/breadcrumb";
 import EditProfile from "@/components/block/EditProfile";
+import Breadcrumb from "@/components/breadcrumb";
+import Layout from "@/layout";
+import { Metadata } from "next";
 
 const item = {
-  title: "Create Item",
+  title: "Edit Profile",
   breadcrumb: [
     {
       name: "Home",
       path: "/",
-    },
-    {
-      name: "Page",
-      path: "/create-item",
     },
     {
       name: "Author",
