@@ -35,7 +35,6 @@ export default function EditProfile(): JSX.Element {
     },
   });
   const handleUpdateProfile = (values: any) => {
-    console.log("getProfileImg", getProfileImg);
     const formData = new FormData();
     Object.keys(values).forEach((key) => {
       formData.append(key, values[key]);

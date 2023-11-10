@@ -1,6 +1,5 @@
 "use client";
 import { IUserInfo } from "@/apis/user";
-import Image from "next/image";
 import { Dispatch } from "react";
 import { UseFormReturn } from "react-hook-form";
 
@@ -21,13 +20,14 @@ export default function UploadProfile(props: Props): JSX.Element {
     <>
       <div className="sc-card-profile text-center">
         <div className="card-media">
-          <Image
+          <img
             id="profileimg"
             src={
               getProfileImg !== null
                 ? URL.createObjectURL(getProfileImg)
-                : userInformation?.avatarUrl ||
-                  "/assets/images/avatar/avata_profile.jpg"
+                : userInformation?.avatarUrl
+                ? userInformation?.avatarUrl
+                : "/assets/images/avatar/avata_profile.jpg"
             }
             alt="Image"
             height={500}
