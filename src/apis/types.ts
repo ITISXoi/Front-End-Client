@@ -27,3 +27,8 @@ export interface IPaginationRequest {
   page?: number;
   page_size?: number;
 }
+
+export type PaginatedResponseOf<DataItem = any> = {
+  pagination: IPaginationResponse;
+  list: DataItem[];
+};

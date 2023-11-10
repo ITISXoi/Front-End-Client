@@ -1,17 +1,14 @@
 "use client";
-import { IImage } from "@/apis/collection/types";
-import Image from "next/image";
+import { shortenString } from "@/utils/js";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 interface Props {
-  data: IImage;
+  data: any;
 }
 
-export default function ProductCard6({ data }: Props): JSX.Element {
+export default function ProductCard18({ data }: Props): JSX.Element {
   const [isHeartToggle, setHeartToggle] = useState<number>(0);
-  const pathname = usePathname();
 
   // heart toggle
   const heartToggle = () => {
@@ -23,48 +20,43 @@ export default function ProductCard6({ data }: Props): JSX.Element {
 
   return (
     <>
-      <div className="sc-card-product explode style2 mg-bt">
+      <div className="sc-card-product">
         <div className="card-media">
-          <Link href="/item-details-1">
+          <Link href={`/detail-collection?id=${data.id}`}>
             <img
-              style={{ aspectRatio: "1/1" }}
+              style={{ aspectRatio: "1/1", objectFit: "cover" }}
               src={data.imageUrl}
               alt="Image"
             />
           </Link>
+          {data.status === "Coming Soon" ? (
+            <div className="coming-soon">coming soon</div>
+          ) : undefined}
+
           <button
             onClick={heartToggle}
-            className={`wishlist-button  ${
+            className={`wishlist-button heart ${
               isHeartToggle === 1 ? "active" : ""
             } `}
           >
-            <span>{`${data.remainingQuantity}/${data.quantity}`}</span>
+            <span className="number-like">{data.totalNfts || 100}</span>
           </button>
         </div>
         <div className="card-title">
-          <h5>
-            <Link href="/item-details-1">
-              {data.name}
-              {": "}
-              {Number(data.percent)}%
-            </Link>
+          <h5 className="style2">
+            <Link href={`/detail-collection?id=${data.id}`}>{data.name}</Link>
           </h5>
+          <div className="tags">{data.type}</div>
         </div>
         <div className="meta-info">
           <div className="author">
             <div className="avatar">
-              <img
-                style={{ aspectRatio: "1/1", width: "60px" }}
-                src={
-                  "https://cloudfront-us-east-1.images.arcpublishing.com/coindesk/DPYBKVZG55EWFHIK2TVT3HTH7Y.png"
-                }
-                alt="Image"
-              />
+              <img height={100} width={100} src={data.imageUrl} alt="Image" />
             </div>
             <div className="info">
               <span>Price</span>
               <h6>
-                <Link href="/authors-2">1234.56 MATIC</Link>
+                <Link href="/authors-2">{data.price} MATIC</Link>
               </h6>
             </div>
           </div>

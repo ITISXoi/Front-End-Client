@@ -1,7 +1,7 @@
-import { AuthorPage } from "@/modules/AuthorPage";
+import { CreateNFTPage } from "@/modules/CreateNFTPage";
 import { GetStaticPropsContext } from "next";
 
-export default AuthorPage;
+export default CreateNFTPage;
 
 export const getStaticProps = async (ctx: GetStaticPropsContext) => {
   return {

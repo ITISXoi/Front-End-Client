@@ -24,12 +24,21 @@ export default function WalletConnectButton(): JSX.Element {
     );
   }
 
+  function shortenHexString(
+    hexString: string,
+    startLength: number,
+    endLength: number
+  ) {
+    const prefix = hexString.slice(0, startLength);
+    const suffix = hexString.slice(-endLength);
+    return prefix + "...." + suffix;
+  }
   if (status === "connecting") {
     nftStatus = "Connecting...";
   }
 
   if (status === "connected") {
-    nftStatus = "MetaMask Connected";
+    nftStatus = shortenHexString(account, 8, 8);
   }
   return (
     <>

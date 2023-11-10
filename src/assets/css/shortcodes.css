@@ -2157,7 +2157,9 @@
 }
 
 .sc-card-product .card-title .tags {
-    width: 49px;
+    width: auto;
+    padding-left: 10px;
+    padding-right: 10px;
     height: 24px;
     line-height: 24px;
     text-align: center;
@@ -3598,7 +3600,7 @@ section.today-picks {
     background: url("../images/item-background/bg-authors.jpg") no-repeat center;
     background-size: cover;
     border-radius: 12px 12px 0 0;
-    padding: 2.8% 2.8% 2.5% 2.8%;
+    padding: 2% 2.8% 2.5% 2.8%;
     position: relative;
 }
 
@@ -3621,7 +3623,7 @@ section.today-picks {
 }
 
 .tab-authors .author-profile .feature-profile {
-    width: 20.8%;
+    width: 22.8%;
     position: relative;
 }
 
