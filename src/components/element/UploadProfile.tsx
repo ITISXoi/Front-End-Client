@@ -1,13 +1,18 @@
 "use client";
+import { IUserInfo } from "@/apis/user";
 import Image from "next/image";
-import { useState } from "react";
-import { FieldValues, UseFormReturn } from "react-hook-form";
+import { Dispatch } from "react";
+import { UseFormReturn } from "react-hook-form";
 
-export default function UploadProfile(
-  methods: UseFormReturn<FieldValues, any, undefined>
-): JSX.Element {
-  const [getProfileImg, setProfileImage] = useState<null | any>(null);
+interface Props {
+  setProfileImage: Dispatch<any>;
+  methods: UseFormReturn<any>;
+  getProfileImg: any;
+  userInformation: IUserInfo | undefined;
+}
 
+export default function UploadProfile(props: Props): JSX.Element {
+  const { methods, setProfileImage, getProfileImg, userInformation } = props;
   const uploadImage = (e: any) => {
     setProfileImage(e.target.files[0]);
   };
@@ -21,7 +26,8 @@ export default function UploadProfile(
             src={
               getProfileImg !== null
                 ? URL.createObjectURL(getProfileImg)
-                : "/assets/images/avatar/avata_profile.jpg"
+                : userInformation?.avatarUrl ||
+                  "/assets/images/avatar/avata_profile.jpg"
             }
             alt="Image"
             height={500}
@@ -39,13 +45,13 @@ export default function UploadProfile(
             accept=".png, .jpg, .jpeg"
           />
         </div>
-        <a
+        {/* <a
           onClick={() => setProfileImage(null)}
           style={{ cursor: "pointer" }}
           className="btn-upload style2"
         >
           Delete
-        </a>
+        </a> */}
       </div>
     </>
   );

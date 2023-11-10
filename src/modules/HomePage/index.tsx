@@ -16,7 +16,7 @@ export const HomePage: PageComponent = () => {
   return (
     <>
       <Hero1 />
-      <LiveAuction />
+      {/* <LiveAuction /> */}
       <TopSeller />
       <TodaysPicks style="pad-b-54 no-pt-mb" />
       <PopularCollection />

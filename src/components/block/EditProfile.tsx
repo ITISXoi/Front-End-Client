@@ -1,8 +1,12 @@
 "use client";
-import { useUserInfo } from "@/apis/user";
+import { updateProfile, useUserInfo } from "@/apis/user";
 import UploadProfile from "../element/UploadProfile";
 import { Controller, useForm } from "react-hook-form";
 import FormWrapper from "../formprovider";
+import { useEffect, useState } from "react";
+import { useMutation } from "react-query";
+import toast from "react-hot-toast";
+import { useMetaMask } from "metamask-react";
 
 interface FormValues {
   username: string;
@@ -14,21 +18,53 @@ interface FormValues {
 }
 
 export default function EditProfile(): JSX.Element {
-  const { data: userInformation } = useUserInfo();
-  console.log("userInformation", userInformation);
+  const { status, account } = useMetaMask();
+  const { data: userInformation, refetch: refetchUserInfo } = useUserInfo();
   const methods = useForm<FormValues>({
     mode: "onChange",
   });
+  const [getProfileImg, setProfileImage] = useState<any>(null);
+
+  const { mutate } = useMutation(updateProfile, {
+    onSuccess: (res) => {
+      toast.success("Update profile successfully!");
+      refetchUserInfo();
+    },
+    onError: () => {
+      toast.error("Update profile unsuccessfully!");
+    },
+  });
   const handleUpdateProfile = (values: any) => {
-    console.log("value", values);
+    console.log("getProfileImg", getProfileImg);
+    const formData = new FormData();
+    Object.keys(values).forEach((key) => {
+      formData.append(key, values[key]);
+    });
+    formData.append("image", getProfileImg);
+    mutate(formData);
   };
+  useEffect(() => {
+    methods.reset({
+      username: userInformation?.username || "",
+      email: userInformation?.email || "",
+      firstName: userInformation?.firstName || "",
+      lastName: userInformation?.lastName || "",
+      dateOfBirth: userInformation?.dateOfBirth || "",
+      wallet: status === "connected" ? account : userInformation?.wallet || "",
+    });
+  }, [userInformation]);
   return (
     <>
       <div className="tf-create-item tf-section">
         <div className="ibthemes-container">
           <div className="row">
             <div className="col-xl-3 col-lg-4 col-md-6 col-12">
-              <UploadProfile methods={methods} />
+              <UploadProfile
+                methods={methods}
+                setProfileImage={setProfileImage}
+                getProfileImg={getProfileImg}
+                userInformation={userInformation}
+              />
             </div>
             <div className="col-xl-9 col-lg-8 col-md-12 col-12">
               <div className="form-upload-profile">
@@ -39,6 +75,7 @@ export default function EditProfile(): JSX.Element {
                       <fieldset>
                         <h4 className="title-infor-account">User name</h4>
                         <input
+                          disabled
                           type="text"
                           placeholder="Your user name"
                           {...methods.register("username")}
@@ -68,6 +105,7 @@ export default function EditProfile(): JSX.Element {
                       <fieldset>
                         <h4 className="title-infor-account">Email</h4>
                         <input
+                          disabled
                           type="text"
                           placeholder="Your email"
                           {...methods.register("email")}
@@ -86,6 +124,7 @@ export default function EditProfile(): JSX.Element {
                       <fieldset>
                         <h4 className="title-infor-account">Wallet address</h4>
                         <input
+                          disabled
                           type="text"
                           {...methods.register("wallet")}
                           required
