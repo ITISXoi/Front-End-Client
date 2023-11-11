@@ -30,9 +30,6 @@ export const CollectionPage: PageComponent = () => {
     <>
       <Breadcrumb data={item} />
       <Explore1 />
-
-      {/* live auction product modal */}
-      <LiveAuctionModal />
     </>
   );
 };

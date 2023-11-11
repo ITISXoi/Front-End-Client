@@ -30,8 +30,6 @@ export const CreateItemPage: PageComponent = () => {
     <>
       <Breadcrumb data={item} />
       <CreateItem />
-
-      <LiveAuctionModal />
     </>
   );
 };

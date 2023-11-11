@@ -74,6 +74,7 @@ export default function EditProfile(): JSX.Element {
                       <fieldset>
                         <h4 className="title-infor-account">User name</h4>
                         <input
+                          style={{ color: "white" }}
                           disabled
                           type="text"
                           placeholder="Your user name"
@@ -84,6 +85,7 @@ export default function EditProfile(): JSX.Element {
                       <fieldset>
                         <h4 className="title-infor-account">First name</h4>
                         <input
+                          style={{ color: "white" }}
                           type="text"
                           placeholder="Your first name"
                           {...methods.register("firstName")}
@@ -93,6 +95,7 @@ export default function EditProfile(): JSX.Element {
                       <fieldset>
                         <h4 className="title-infor-account">Date of birth</h4>
                         <input
+                          style={{ color: "white" }}
                           type="date"
                           {...methods.register("dateOfBirth")}
                           required
@@ -104,6 +107,7 @@ export default function EditProfile(): JSX.Element {
                       <fieldset>
                         <h4 className="title-infor-account">Email</h4>
                         <input
+                          style={{ color: "white" }}
                           disabled
                           type="text"
                           placeholder="Your email"
@@ -114,6 +118,7 @@ export default function EditProfile(): JSX.Element {
                       <fieldset>
                         <h4 className="title-infor-account">Last name</h4>
                         <input
+                          style={{ color: "white" }}
                           type="text"
                           placeholder="Your last name"
                           {...methods.register("lastName")}
@@ -123,6 +128,7 @@ export default function EditProfile(): JSX.Element {
                       <fieldset>
                         <h4 className="title-infor-account">Wallet address</h4>
                         <input
+                          style={{ color: "white" }}
                           disabled
                           type="text"
                           {...methods.register("wallet")}

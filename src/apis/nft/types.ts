@@ -1,6 +1,6 @@
-import { PagedMeta, Paging } from '@/types/util.types';
+import { PagedMeta, Paging } from "@/types/util.types";
 
-import { IImageLayer } from '../collection/types';
+import { IImageLayer } from "../collection/types";
 
 export interface INFT {
   id: string;
@@ -47,6 +47,9 @@ export interface INFTDraft {
   price: string;
   collectionName: string;
   attributes: string;
+  collectionImageUrl: string;
+  creatorImageUrl: string;
+  creatorUserName: string;
 }
 export interface IListNFT {
   data: INFT[];

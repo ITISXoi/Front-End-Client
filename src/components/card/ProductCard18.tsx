@@ -22,7 +22,7 @@ export default function ProductCard18({ data }: Props): JSX.Element {
     <>
       <div className="sc-card-product">
         <div className="card-media">
-          <Link href={`/detail-collection?id=${data.id}`}>
+          <Link href={`/detail-nft?id=${data.id}`}>
             <img
               style={{ aspectRatio: "1/1", objectFit: "cover" }}
               src={data.imageUrl}

@@ -30,7 +30,6 @@ export const CreateNFTPage: PageComponent = () => {
     <>
       <Breadcrumb data={item} />
       <AuthorProfile />
-      <LiveAuctionModal />
     </>
   );
 };

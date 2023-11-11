@@ -1,4 +1,4 @@
-import Explore2 from "@/components/block/Explore2";
+import ListDraftNFT from "@/components/block/ListDraftNFT";
 import Breadcrumb from "@/components/breadcrumb";
 import LiveAuctionModal from "@/components/modal/LiveAuctionModal";
 import Layout from "@/layout";
@@ -25,15 +25,15 @@ export const metadata: Metadata = {
   title: "Login",
 };
 
-export const ListNFTPage: PageComponent = () => {
+export const ListDraftNFTPage: PageComponent = () => {
   return (
     <>
       <Breadcrumb data={item} />
-      <Explore2 />
+      <ListDraftNFT />
     </>
   );
 };
 
-ListNFTPage.getLayout = function getLayout(page) {
+ListDraftNFTPage.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };

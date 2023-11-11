@@ -1021,6 +1021,11 @@
     display: inline-block;
 }
 
+.wishlist-button .type-collection {
+    width: auto;
+    display: inline-block;
+}
+
 .wishlist-button.active.heart::before {
     color: #ee3434;
     font-weight: 700;

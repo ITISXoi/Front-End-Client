@@ -27,9 +27,8 @@ export default function BlogCard1({ data, onClick }: Props): JSX.Element {
         <div className="meta-info">
           <div className="author">
             <div className="avatar">
-              <Image
-                height={100}
-                width={100}
+              <img
+                style={{ width: "50px", height: "50px" }}
                 src={data.author.avatar}
                 alt="avatar"
               />
