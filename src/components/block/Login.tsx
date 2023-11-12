@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useMutation } from "react-query";
 import FormWrapper from "../formprovider";
+import Link from "next/link";
 
 export default function Login(): JSX.Element {
   const { push } = useRouter();
@@ -65,7 +66,22 @@ export default function Login(): JSX.Element {
                       </label>
                       <a className="forgot-pass">Forgot Password ?</a>
                     </div>
-                    <button className="submit">Login</button>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                      }}
+                    >
+                      <button className="submit">Login</button>
+                      <span className="forgot-pass">Or</span>
+                      <button
+                        type="button"
+                        onClick={() => push(routeEnums.signUp)}
+                      >
+                        Sign Up
+                      </button>
+                    </div>
                   </FormWrapper>
                 </div>
               </div>

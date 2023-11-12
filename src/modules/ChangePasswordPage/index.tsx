@@ -1,18 +1,17 @@
-import ListDraftNFT from "@/components/block/ListDraftNFT";
+import ChangePassword from "@/components/block/ChangePassword";
 import Breadcrumb from "@/components/breadcrumb";
-import LiveAuctionModal from "@/components/modal/LiveAuctionModal";
 import Layout from "@/layout";
 import { Metadata } from "next";
 
 const item = {
-  title: "List Draft NTFs",
+  title: "Change Password",
   breadcrumb: [
     {
       name: "Home",
       path: "/",
     },
     {
-      name: "Draft",
+      name: "Change Password",
     },
   ],
 };
@@ -21,15 +20,15 @@ export const metadata: Metadata = {
   title: "Login",
 };
 
-export const ListDraftNFTPage: PageComponent = () => {
+export const ChangePasswordPage: PageComponent = () => {
   return (
     <>
       <Breadcrumb data={item} />
-      <ListDraftNFT />
+      <ChangePassword />
     </>
   );
 };
 
-ListDraftNFTPage.getLayout = function getLayout(page) {
+ChangePasswordPage.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };

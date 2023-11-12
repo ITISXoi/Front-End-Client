@@ -1,6 +1,6 @@
 "use client";
 import { product3 } from "@/data/product";
-import ProductCard3 from "../card/ProductCard18";
+import ProductCard3 from "../card/ProductCard3";
 import { useState } from "react";
 import Dropdown1 from "../dropdown/Dropdown1";
 import { useListCollection } from "@/apis/collection/queries";

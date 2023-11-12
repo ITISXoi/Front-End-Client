@@ -1,10 +1,10 @@
 "use client";
-import Image from "next/image";
+import { useUserInfo } from "@/apis/user";
+import { COOKIES, removeCookies } from "@/libs/cookies";
+import { useMetaMask } from "metamask-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { useMetaMask } from "metamask-react";
-import { useUserInfo } from "@/apis/user";
 
 const tab: string[] = ["All", "Unread"];
 
@@ -12,23 +12,21 @@ export default function AdminBar(): JSX.Element {
   const [isNotificationActive, setNotificationActive] =
     useState<boolean>(false);
   const [isAuthorActive, setAuthorActive] = useState<boolean>(false);
-  const [getCurrentTab, setCurrentTab] = useState<number>(0);
   const { status, account } = useMetaMask();
   const data = useMetaMask();
   const { data: userInformation } = useUserInfo();
 
   const path = usePathname();
 
-  const notificationHandler = () => {
-    setNotificationActive(!isNotificationActive);
-    setAuthorActive(false);
-  };
-
   const avatarHandler = () => {
     setAuthorActive(!isAuthorActive);
     setNotificationActive(false);
   };
-
+  const handleLogout = () => {
+    removeCookies(COOKIES.accessToken);
+    removeCookies(COOKIES.email);
+    removeCookies(COOKIES.userId);
+  };
   function shortenHexString(
     hexString: string,
     startLength: number,
@@ -50,156 +48,8 @@ export default function AdminBar(): JSX.Element {
 
   return (
     <>
-      <div
-        className={
-          path !== "/authors-1" &&
-          path !== "/authors-2" &&
-          path !== "/create-item" &&
-          path !== "/edit-profile"
-            ? "admin_active"
-            : ""
-        }
-      >
+      <div>
         <div className="header_avatar">
-          {/* <div className="popup-notification">
-            <div className="notification" onClick={notificationHandler}>
-              <span className="number">3</span>
-              <svg
-                width={19}
-                height={22}
-                viewBox="0 0 19 22"
-                fill="#fff"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M18.4915 15.495L17.209 13.65C17.0339 13.3992 16.9397 13.1009 16.939 12.795V7.5C16.939 5.51088 16.1488 3.60322 14.7423 2.1967C13.3357 0.790176 11.4281 0 9.43896 0C7.44984 0 5.54218 0.790176 4.13566 2.1967C2.72914 3.60322 1.93896 5.51088 1.93896 7.5V12.795C1.93824 13.1009 1.84403 13.3992 1.66896 13.65L0.386463 15.495C0.192273 15.7102 0.064576 15.977 0.018815 16.2632C-0.0269461 16.5494 0.0111884 16.8427 0.128607 17.1077C0.246026 17.3727 0.437699 17.598 0.680449 17.7563C0.923199 17.9147 1.20663 17.9993 1.49646 18H5.76396C5.9361 18.8477 6.39601 19.6099 7.06577 20.1573C7.73553 20.7047 8.57394 21.0038 9.43896 21.0038C10.304 21.0038 11.1424 20.7047 11.8122 20.1573C12.4819 19.6099 12.9418 18.8477 13.114 18H17.3815C17.6713 17.9993 17.9547 17.9147 18.1975 17.7563C18.4402 17.598 18.6319 17.3727 18.7493 17.1077C18.8667 16.8427 18.9049 16.5494 18.8591 16.2632C18.8133 15.977 18.6856 15.7102 18.4915 15.495ZM9.43896 19.5C8.97475 19.4987 8.52231 19.3538 8.14366 19.0853C7.76501 18.8168 7.4787 18.4377 7.32396 18H11.554C11.3992 18.4377 11.1129 18.8168 10.7343 19.0853C10.3556 19.3538 9.90317 19.4987 9.43896 19.5ZM1.49646 16.5C1.53036 16.4685 1.56056 16.4333 1.58646 16.395L2.89896 14.505C3.24909 14.0034 3.43751 13.4067 3.43896 12.795V7.5C3.43896 5.9087 4.0711 4.38258 5.19632 3.25736C6.32154 2.13214 7.84766 1.5 9.43896 1.5C11.0303 1.5 12.5564 2.13214 13.6816 3.25736C14.8068 4.38258 15.439 5.9087 15.439 7.5V12.795C15.4404 13.4067 15.6288 14.0034 15.979 14.505L17.2915 16.395C17.3174 16.4333 17.3476 16.4685 17.3815 16.5H1.49646Z"
-                  fill="white"
-                />
-              </svg>
-            </div>
-            <div
-              className={`avatar_popup2  mt-20 ${
-                isNotificationActive ? "visible" : ""
-              }`}
-            >
-              <div className="show mg-bt-18">
-                <h4>Notifications</h4>
-                <a>Show All</a>
-              </div>
-              <div className="flat-tabs">
-                <ul className="menu-tab">
-                  {tab.map((item, index) => (
-                    <li
-                      onClick={() => setCurrentTab(index)}
-                      key={index}
-                      className={getCurrentTab === index ? "active" : ""}
-                    >
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="content-tab">
-                  {getCurrentTab === 0 && (
-                    <div className="content-inner">
-                      <div className="wrap-box">
-                        <div className="heading">Today</div>
-                        {Array.from({ length: 4 }).map((_, index) => (
-                          <div key={index} className="sc-box">
-                            <div className="content">
-                              <div className="avatar">
-                                <Image
-                                  height={32}
-                                  width={32}
-                                  src="/assets/images/avatar/avt-6.jpg"
-                                  alt="Avatar"
-                                />
-                              </div>
-                              <div className="infor">
-                                <span className="fw-7">Tyler Covington</span>
-                                <span>started following you.</span>
-                                <p>1 hour ago</p>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="wrap-box">
-                        <div className="heading">Yesterday</div>
-                        {Array.from({ length: 2 }).map((_, index) => (
-                          <div key={index} className="sc-box">
-                            <div className="content">
-                              <div className="avatar">
-                                <Image
-                                  height={32}
-                                  width={32}
-                                  src="/assets/images/avatar/avt-6.jpg"
-                                  alt="Avatar"
-                                />
-                              </div>
-                              <div className="infor">
-                                <span className="fw-7">Tyler Covington</span>
-                                <span>started following you.</span>
-                                <p>1 hour ago</p>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  {getCurrentTab === 1 && (
-                    <div className="content-inner">
-                      <div className="wrap-box">
-                        <div className="heading">Today</div>
-                        {Array.from({ length: 3 }).map((_, index) => (
-                          <div key={index} className="sc-box">
-                            <div className="content">
-                              <div className="avatar">
-                                <Image
-                                  height={32}
-                                  width={32}
-                                  src="/assets/images/avatar/avt-6.jpg"
-                                  alt="Avatar"
-                                />
-                              </div>
-                              <div className="infor">
-                                <span className="fw-7">Tyler Covington</span>
-                                <span>started following you.</span>
-                                <p>1 hour ago</p>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="wrap-box">
-                        <div className="heading">Yesterday</div>
-                        {Array.from({ length: 1 }).map((_, index) => (
-                          <div key={index} className="sc-box">
-                            <div className="content">
-                              <div className="avatar">
-                                <Image
-                                  height={32}
-                                  width={32}
-                                  src="/assets/images/avatar/avt-6.jpg"
-                                  alt="Avatar"
-                                />
-                              </div>
-                              <div className="infor">
-                                <span className="fw-7">Tyler Covington</span>
-                                <span>started following you.</span>
-                                <p>1 hour ago</p>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div> */}
           {status === "connected" && (
             <div className="popup-user">
               <img
@@ -237,7 +87,7 @@ export default function AdminBar(): JSX.Element {
                 <div className="divider" />
                 <div className="hr" />
                 <div className="links mt-20">
-                  <a>
+                  <Link className="mt-10" href="/edit-profile">
                     <svg
                       width={20}
                       height={20}
@@ -251,7 +101,22 @@ export default function AdminBar(): JSX.Element {
                       />
                     </svg>
                     <span>My Profile</span>
-                  </a>
+                  </Link>
+                  <Link className="mt-10" href="/change-password">
+                    <svg
+                      width={20}
+                      height={20}
+                      viewBox="0 10 50 30"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="m46.5 4h-3c-.8 0-1.5.7-1.5 1.5v7c0 .9-.5 1.3-1.2.7-.3-.4-.6-.7-1-1-5-5-12-7.1-19.2-5.7-2.5.5-4.9 1.5-7 2.9-6.1 4-9.6 10.5-9.7 17.5-.1 5.4 2 10.8 5.8 14.7 4 4.2 9.4 6.5 15.2 6.5 5.1 0 9.9-1.8 13.7-5 .7-.6.7-1.6.1-2.2l-2.1-2.1c-.5-.5-1.4-.6-2-.1-3.6 3-8.5 4.2-13.4 3-1.3-.3-2.6-.9-3.8-1.6-5.7-3.5-8.4-10.1-6.8-16.7.3-1.3.9-2.6 1.6-3.8 2.8-4.9 7.7-7.6 12.9-7.6 4 0 7.8 1.6 10.6 4.4.5.4.9.9 1.2 1.4.3.8-.4 1.2-1.3 1.2h-7c-.8 0-1.5.7-1.5 1.5v3.1c0 .8.6 1.4 1.4 1.4h18.3c.7 0 1.3-.6 1.3-1.3v-18.2c-.1-.8-.8-1.5-1.6-1.5z"
+                        fill="#fff"
+                      />
+                    </svg>
+                    <span>Change Password</span>
+                  </Link>
                   <Link className="mt-10" href="/edit-profile">
                     <svg
                       width={20}
@@ -284,7 +149,7 @@ export default function AdminBar(): JSX.Element {
                         fill="white"
                       />
                     </svg>
-                    <span>Log out</span>
+                    <span onClick={handleLogout}>Log out</span>
                   </Link>
                 </div>
               </div>

@@ -109,9 +109,23 @@ export default function Signup(): JSX.Element {
                         <input type="checkbox" />
                         <span className="btn-checkbox" />
                       </label>
-                      <a className="forgot-pass">Forgot Password ?</a>
                     </div>
-                    <button className="submit">Sing Up</button>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                      }}
+                    >
+                      <button className="submit">Sign Up</button>
+                      <span className="forgot-pass">Or</span>
+                      <button
+                        type="button"
+                        onClick={() => push(routeEnums.login)}
+                      >
+                        Login
+                      </button>
+                    </div>{" "}
                   </FormWrapper>
                 </div>
               </div>

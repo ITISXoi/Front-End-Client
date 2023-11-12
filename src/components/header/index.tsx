@@ -1,19 +1,28 @@
 "use client";
-import Link from "next/link";
-import Navigation from "./Navigation";
-import Mode from "./Mode";
 import useDarkModeCheck from "@/hooks/useDarkModeCheck";
-import { usePathname } from "next/navigation";
 import useStickyMenu from "@/hooks/useStickyMenu";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import WalletConnectButton from "../button/WalletConnectButton";
 import AdminBar from "./AdminBar";
+import Mode from "./Mode";
+import Navigation from "./Navigation";
 import Search1 from "./Search1";
 import Search2 from "./Search2";
-import WalletConnectButton from "../button/WalletConnectButton";
-import Image from "next/image";
+import { COOKIES, getCookies } from "@/libs/cookies";
+import { useEffect, useState } from "react";
 
 export default function Header(): JSX.Element {
   const path = usePathname();
-
+  const token = getCookies(COOKIES.accessToken);
+  const [showProfile, setShowProfile] = useState(false);
+  useEffect(() => {
+    if (token) {
+      setShowProfile(true);
+    } else {
+      setShowProfile(false);
+    }
+  }, [token]);
   // is dark hook
   const isDark = useDarkModeCheck();
 
@@ -82,22 +91,9 @@ export default function Header(): JSX.Element {
                   <Navigation />
 
                   <div className="flat-search-btn flex">
-                    {/* search bar 2 */}
-                    {path !== "/home-5" &&
-                      path !== "/home-6" &&
-                      path !== "/home-7" &&
-                      path !== "/home-8" &&
-                      path !== "/text-type" &&
-                      path !== "/text-scroll" &&
-                      path !== "/text-rotate" && <Search2 />}
-
-                    {/* wallet */}
-                    {path !== "/authors-1" &&
-                      path !== "/authors-2" &&
-                      path !== "/create-item" &&
-                      path !== "/edit-profile" && <WalletConnectButton />}
-
-                    <AdminBar />
+                    <Search2 />
+                    <WalletConnectButton />
+                    {showProfile && <AdminBar />}
                   </div>
                 </div>
               </div>
