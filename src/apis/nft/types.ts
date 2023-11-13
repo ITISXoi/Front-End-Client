@@ -50,6 +50,7 @@ export interface INFTDraft {
   collectionImageUrl: string;
   creatorImageUrl: string;
   creatorUserName: string;
+  collectionId: number;
 }
 export interface IListNFT {
   data: INFT[];

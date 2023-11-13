@@ -13,7 +13,6 @@ export default function ItemDetails1() {
     limit: 4,
   });
   const { data } = useDetailDraftNFT(String(id), { enabled: !!id });
-  console.log("data", data);
   const renderer = ({
     days,
     hours,
@@ -137,13 +136,12 @@ export default function ItemDetails1() {
                       </div>
                     </div>
                   </div>
-                  <a
-                    data-bs-toggle="modal"
-                    data-bs-target="#popup_bid"
+                  <Link
+                    href={`/create-nft?id=${data?.collectionId}&draftId=${data?.id}`}
                     className="sc-button loadmore style bag fl-button pri-3"
                   >
                     <span>Update Draft</span>
-                  </a>
+                  </Link>
                 </div>
                 <ItemDetailsTab data={data?.images} />
               </div>

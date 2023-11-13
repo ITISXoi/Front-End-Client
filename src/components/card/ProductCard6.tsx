@@ -7,9 +7,13 @@ import { useState } from "react";
 
 interface Props {
   data: IImage;
+  handeClickItem: () => void;
 }
 
-export default function ProductCard6({ data }: Props): JSX.Element {
+export default function ProductCard6({
+  data,
+  handeClickItem,
+}: Props): JSX.Element {
   const [isHeartToggle, setHeartToggle] = useState<number>(0);
   const pathname = usePathname();
 
@@ -23,15 +27,12 @@ export default function ProductCard6({ data }: Props): JSX.Element {
 
   return (
     <>
-      <div className="sc-card-product explode style2 mg-bt">
+      <div
+        className="sc-card-product explode style2 mg-bt"
+        onClick={handeClickItem}
+      >
         <div className="card-media">
-          <Link href="/item-details-1">
-            <img
-              style={{ aspectRatio: "1/1" }}
-              src={data.imageUrl}
-              alt="Image"
-            />
-          </Link>
+          <img style={{ aspectRatio: "1/1" }} src={data.imageUrl} alt="Image" />
           <button
             onClick={heartToggle}
             className={`wishlist-button  ${
@@ -43,11 +44,9 @@ export default function ProductCard6({ data }: Props): JSX.Element {
         </div>
         <div className="card-title">
           <h5>
-            <Link href="/item-details-1">
-              {data.name}
-              {": "}
-              {Number(data.percent)}%
-            </Link>
+            {data.name}
+            {": "}
+            {Number(data.percent)}%
           </h5>
         </div>
         <div className="meta-info">
