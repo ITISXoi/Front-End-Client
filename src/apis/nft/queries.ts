@@ -97,12 +97,28 @@ export const useListCustomized = (
 
 export const useFetchMoreListCustomized = (
   params: ICustomizedNFTParams,
-  option?: UseQueryOptions<IListNFT, Error>
+  option?: any
 ) => {
-  return useInfiniteQuery<IListNFT, Error>(
+  return useInfiniteQuery<any>(
     ["nft/list-nft-offchain", params],
-    () => getListCustomized(params),
-    option
+    async ({ pageParam = 1 }) => {
+      console.log("pageParam", pageParam);
+      const data = await getListCustomized({
+        page: pageParam,
+        limit: params.limit,
+      });
+      return data;
+    },
+    {
+      getNextPageParam: (lastPage) => {
+        const { totalPages, currentPage } = lastPage.meta.pagination;
+        if (currentPage === totalPages) {
+          return;
+        } else {
+          return currentPage + 1;
+        }
+      },
+    }
   );
 };
 

@@ -188,6 +188,6 @@ export interface IDetailNFT {
 }
 
 export interface ICustomizedNFTParams extends Paging {
-  type: string;
+  type?: string;
   collectionKeyId?: number;
 }

@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 export default function Header(): JSX.Element {
   const path = usePathname();
   const token = getCookies(COOKIES.accessToken);
-  const [showProfile, setShowProfile] = useState(false);
+  const [showProfile, setShowProfile] = useState(true);
   useEffect(() => {
     if (token) {
       setShowProfile(true);
@@ -23,10 +23,8 @@ export default function Header(): JSX.Element {
       setShowProfile(false);
     }
   }, [token]);
-  // is dark hook
-  const isDark = useDarkModeCheck();
 
-  // sticky menu
+  const isDark = useDarkModeCheck();
   const isSticky1 = useStickyMenu(200);
   const isSticky2 = useStickyMenu(250);
 

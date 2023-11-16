@@ -3715,7 +3715,6 @@ section.today-picks {
 
 /* title */
 .tab-authors .menu-tab {
-    padding: 0 2% 0 24.5%;
     border-radius: 0 0 12px 12px;
     background: var(--primary-color7);
 }

@@ -31,7 +31,7 @@ export const navigationLogin: NavigationType[] = [
   {
     id: 3,
     name: "NFTs",
-    path: "/nfts",
+    path: "/list-all-nft",
   },
   {
     id: 4,

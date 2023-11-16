@@ -14,7 +14,7 @@ export interface CollectionType {
 export const blog: CollectionType[] = [
   {
     id: 1,
-    url: "/draft",
+    url: "collection/nft-draft",
     img: "/assets/images/imageV2/draft.jpeg",
     title: "Draft Your NFTs",
     description: `Where created drafts are saved and you can mint them if the collection is in the minting period. If it's not yet mint time, you can still view and edit them.`,

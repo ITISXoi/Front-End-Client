@@ -4,7 +4,7 @@ import { COOKIES, removeCookies } from "@/libs/cookies";
 import { useMetaMask } from "metamask-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const tab: string[] = ["All", "Unread"];
 
@@ -15,6 +15,11 @@ export default function AdminBar(): JSX.Element {
   const { status, account } = useMetaMask();
   const data = useMetaMask();
   const { data: userInformation } = useUserInfo();
+  useEffect(() => {
+    if (!userInformation) {
+      // handleLogout();
+    }
+  }, [userInformation]);
 
   const path = usePathname();
 

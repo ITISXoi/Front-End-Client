@@ -9,7 +9,11 @@ export default function TodaysPicks({
 }: {
   style?: string;
 }): JSX.Element {
-  const { data: dataNFTDraft } = useListCustomized({ type: "draft" });
+  const { data: dataNFTDraft } = useListCustomized({
+    type: "draft",
+    page: 1,
+    limit: 8,
+  });
   console.log("data", dataNFTDraft);
   return (
     <>
@@ -18,7 +22,7 @@ export default function TodaysPicks({
           <div className="row">
             <div className="col-md-12">
               <div className="heading-live-auctions mg-bt-21">
-                <h2 className="tf-title pad-l-7">Today&apos;s NFTs</h2>
+                <h2 className="tf-title pad-l-7">New NFTs</h2>
                 <Link href="/explore-3" className="exp style2">
                   EXPLORE MORE
                 </Link>
@@ -33,15 +37,6 @@ export default function TodaysPicks({
                 <ProductCard18 data={item} />
               </div>
             ))}
-            <div className="col-md-12 wrap-inner load-more text-center mg-t-4">
-              <Link
-                href="/explore-3"
-                id="loadmore"
-                className="sc-button loadmore fl-button pri-3"
-              >
-                <span>Load More</span>
-              </Link>
-            </div>
           </div>
         </div>
       </section>

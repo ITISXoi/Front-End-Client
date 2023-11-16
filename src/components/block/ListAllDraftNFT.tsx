@@ -1,9 +1,14 @@
 "use client";
-import { useFetchMoreListCustomized } from "@/apis/nft/queries";
+import { useMetadataCollection } from "@/apis/collection/queries";
+import {
+  useFetchMoreListCustomized,
+  useListCustomized,
+} from "@/apis/nft/queries";
 import { product1 } from "@/data/product";
-import { useRouter } from "next/router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import ProductCard18 from "../card/ProductCard18";
+import DropDownFilter from "../dropdown/DropDownFilter";
+import DropDownFilterType from "../dropdown/DropDownFilterType";
 
 const tabs: string[] = ["All", "Art", "Music", "Collectibles", "Sports"];
 
@@ -12,9 +17,7 @@ interface ItemState {
   end: number;
 }
 
-export default function ListDraftNFT() {
-  const router = useRouter();
-  const { id } = router.query;
+export default function ListAllDraftNFT() {
   const [getItem, setItem] = useState<ItemState>({
     start: 0,
     end: 8,
@@ -22,26 +25,51 @@ export default function ListDraftNFT() {
   const [params, setParams] = useState<{
     page: number;
     limit: number;
-    type: string;
-    collectionKeyId: number;
   }>({
     page: 1,
     limit: 8,
-    type: "draft",
-    collectionKeyId: Number(id),
   });
   const { data: dataNFTDraft, fetchNextPage } =
     useFetchMoreListCustomized(params);
+  const { data: metadataCollection } = useMetadataCollection();
 
   const handleLoadmore = () => {
     fetchNextPage();
   };
 
+  const listCollection = useMemo(() => {
+    let dataDrop = [{ id: 0, name: "All Collection" }];
+    metadataCollection?.map((item: any) => {
+      dataDrop.push({ id: item.id, name: item.name });
+    });
+    return dataDrop;
+  }, [metadataCollection]);
+  const listType = [
+    { type: "all", name: "All Type" },
+    { type: "draft", name: "Draft" },
+    { type: "minted", name: "Minted" },
+  ];
   return (
     <>
       <div className="tf-section sc-explore-2">
         <div className="ibthemes-container">
           <div className="row">
+            <div className="seclect-box style3">
+              <DropDownFilter
+                id="artworks"
+                defaultSelect="All Collection"
+                data={listCollection}
+                setParams={setParams}
+                params={params}
+              />
+              <DropDownFilterType
+                id="sort-by"
+                defaultSelect="All Type"
+                data={listType}
+                setParams={setParams}
+                params={params}
+              />
+            </div>
             <div className="col-md-12">
               <div className="flat-tabs explore-tab">
                 <div className="content-tab mg-t-40">
