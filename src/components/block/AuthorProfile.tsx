@@ -16,7 +16,7 @@ import ProductCard6 from "../card/ProductCard6";
 import FormWrapper from "../formprovider";
 import { toPng } from "html-to-image";
 import BigNumber from "bignumber.js";
-import { draftNFT, generateNFT, updateDraftNFT } from "@/apis/nft/request";
+import { createNFT, draftNFT, generateNFT, updateDraftNFT } from "@/apis/nft/request";
 import { COOKIES, getCookies } from "@/libs/cookies";
 import { useMutation } from "react-query";
 import { DataURIToBlob, convertToFormData } from "@/utils/common";
@@ -237,6 +237,61 @@ export default function CustomNFT(): JSX.Element {
         setFullLoading(false);
       },
     });
+  const { mutate: mutateCreateNFT, status: statusCreateNFT } = useMutation(
+    createNFT,
+    {
+      onSuccess: (data) => {
+        (async () => {
+          if (!myContract) return;
+          const bigNumber = new BigNumber(price || 0).multipliedBy(10 ** 18);
+          // const txread = await myContract.collections(collectionId);
+          // console.log(txread)
+          // const price = formatUnits(txread.price, 0);
+          try {
+            const tx = await myContract?.mintNFT(
+              collection.collectionId,
+              `${data.url_ipfs.toString()}.json`,
+              `${Math.round(Number(bigNumber.valueOf()))}`,
+              data.hashUniqueNft,
+              data.signature,
+              {
+                gasLimit: 3000000,
+                value: `${Math.round(Number(bigNumber.valueOf()))}`,
+              }
+            );
+            myContract.on(
+              "NFTMinted",
+              async (
+                collectionId,
+                collectionAddress,
+                receiver,
+                uri,
+                tokenId,
+                royaltyFee
+              ) => {
+                await tx?.wait(2);
+                // setLoading(false);
+                toast.success("Mint NFT successfully!");
+                navigate(`/nft/${data?.id}`);
+              }
+            );
+            console.log(tx);
+          } catch (error) {
+            // setLoading(false);
+            toast.error("Mint failed!");
+            console.log(error);
+            setFullLoading(false);
+          }
+        })();
+      },
+      onError: (error: any) => {
+        console.log("error", error);
+        toast.error(error?.meta?.message || "Error");
+        // setLoading(false);
+        setFullLoading(false);
+      },
+    }
+  );
   const handleCreateNFT = () => {};
   const handleCreateDraft = () => {
     if (getCookies(COOKIES.accessToken) === null) {
