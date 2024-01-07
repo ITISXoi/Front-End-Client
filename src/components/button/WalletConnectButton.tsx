@@ -1,32 +1,10 @@
 "use client";
 
-import { useMetaMask } from "metamask-react";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 export default function WalletConnectButton(): JSX.Element {
-  const { status, connect, account, chainId, ethereum } = useMetaMask();
-  const nftStatus = () => {
-    switch (status) {
-      case "initializing":
-        return "Initializing MetaMask...";
-      case "unavailable":
-        return "MetaMask not available";
-      case "notConnected":
-        return (
-          <button
-            onClick={connect}
-            className="sc-button header-slider style style-1 wallet fl-button pri-1"
-          >
-            <span>Wallet Connect</span>
-          </button>
-        );
-      case "connecting":
-        return "Connecting...";
-      case "connected":
-        return shortenHexString(account, 8, 8);
-      default:
-        break;
-    }
-  };
+  const { openConnectModal } = useConnectModal();
 
   function shortenHexString(
     hexString: string,
@@ -41,13 +19,7 @@ export default function WalletConnectButton(): JSX.Element {
   return (
     <>
       <div className="sc-btn-top mg-r-12" id="site-header">
-        {status === "notConnected" ? (
-          nftStatus()
-        ) : (
-          <button className="sc-button header-slider style style-1 wallet fl-button pri-1">
-            <span>{nftStatus()}</span>
-          </button>
-        )}
+        <ConnectButton />
       </div>
     </>
   );

@@ -3,23 +3,26 @@ import { product3 } from "@/data/product";
 import ProductCard3 from "../card/ProductCard3";
 import { useState } from "react";
 import Dropdown1 from "../dropdown/Dropdown1";
-import { useListCollection } from "@/apis/collection/queries";
+import {
+  useFetchMoreListCollection,
+  useListCollection,
+} from "@/apis/collection/queries";
 
 export default function Explore1() {
   const [getItem, setItem] = useState<number>(8);
-
-  const { data } = useListCollection({
+  const [params, setParams] = useState<{
+    name: string;
+    page: number;
+    limit: number;
+  }>({
     name: "",
     page: 1,
-    limit: 10,
+    limit: 8,
   });
-
-  const loadMoreHandler = () => {
-    if (product3.length > getItem) {
-      setItem(getItem + 4);
-    }
+  const { data, fetchNextPage } = useFetchMoreListCollection(params);
+  const handleLoadmore = () => {
+    fetchNextPage();
   };
-
   return (
     <>
       <div className="tf-section sc-explore-1">
@@ -73,25 +76,27 @@ export default function Explore1() {
                 </div>
               </div>
             </div>
-            {data?.list.map((item) => (
-              <div
-                key={item.id}
-                className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
-              >
-                <ProductCard3 data={item} />
-              </div>
+            {data?.pages.map((record: any) => (
+              <>
+                {record?.list.map((item: any) => (
+                  <div
+                    key={item.id}
+                    className="col-xl-3 col-lg-4 col-md-6 col-sm-6"
+                  >
+                    <ProductCard3 data={item} />
+                  </div>
+                ))}
+              </>
             ))}
-            {product3.length > getItem && (
-              <div className="col-md-12 wrap-inner load-more text-center">
-                <button
-                  onClick={loadMoreHandler}
-                  id="loadmore"
-                  className="sc-button loadmore fl-button pri-3"
-                >
-                  <span>Load More</span>
-                </button>
-              </div>
-            )}
+            <div className="col-md-12 wrap-inner load-more text-center">
+              <button
+                onClick={handleLoadmore}
+                id="loadmore"
+                className="sc-button loadmore fl-button pri-3"
+              >
+                <span>Load More</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

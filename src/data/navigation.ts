@@ -36,7 +36,7 @@ export const navigationLogin: NavigationType[] = [
   {
     id: 4,
     name: "Artist",
-    path: "/nfts",
+    path: "/artist-list",
   },
 ];
 

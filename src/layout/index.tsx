@@ -1,10 +1,10 @@
 "use client";
-import { usePathname } from "next/navigation";
-import MobileNavigation from "@/components/header/MobileNavigation";
 import BackToTop from "@/components/button/BackToTop";
 import Footer from "@/components/footer";
-import { Providers } from "@/theme/providers";
 import Header from "@/components/header";
+import MobileNavigation from "@/components/header/MobileNavigation";
+import { Providers } from "@/theme/providers";
+import { usePathname } from "next/navigation";
 
 if (typeof window !== "undefined") {
   import("bootstrap");

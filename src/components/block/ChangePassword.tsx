@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useMutation } from "react-query";
 import FormWrapper from "../formprovider";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 interface FormValues {
   oldPassword: string;
@@ -14,7 +16,26 @@ interface FormValues {
 
 export default function ChangePassword(): JSX.Element {
   const { push } = useRouter();
+  const validationSchema = yup.object().shape({
+    oldPassword: yup
+      .string()
+      .required("Password required!")
+      .min(8, "Password is too short, at least 8 characrters")
+      .max(20, "Password is too long, no longer then 20 characters")
+      .label("Password"),
+    newPassword: yup
+      .string()
+      .required("Password required!")
+      .min(8, "Password is too short, at least 8 characrters")
+      .max(20, "Password is too long, no longer then 20 characters")
+      .label("Password"),
+    confirmNewPassword: yup
+      .string()
+      .required("Confirm your password")
+      .oneOf([yup.ref("newPassword"), null], "New Password must match"),
+  });
   const methods = useForm({
+    resolver: yupResolver(validationSchema),
     mode: "onChange",
   });
 
@@ -53,7 +74,22 @@ export default function ChangePassword(): JSX.Element {
                       type="password"
                       placeholder="Your Current Password"
                       {...methods.register("oldPassword")}
-                    />
+                    />{" "}
+                    {methods?.formState?.errors?.oldPassword?.message && (
+                      <div
+                        className="title-infor-account"
+                        style={{
+                          marginTop: "-10px",
+                          marginBottom: "20px",
+                          color: "#EA3F30",
+                        }}
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            methods?.formState?.errors?.oldPassword?.message ||
+                            "Error",
+                        }}
+                      />
+                    )}
                     <input
                       tabIndex={1}
                       aria-required="true"
@@ -62,6 +98,21 @@ export default function ChangePassword(): JSX.Element {
                       placeholder="Your New Password"
                       {...methods.register("newPassword")}
                     />
+                    {methods?.formState?.errors?.newPassword?.message && (
+                      <div
+                        className="title-infor-account"
+                        style={{
+                          marginTop: "-10px",
+                          marginBottom: "20px",
+                          color: "#EA3F30",
+                        }}
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            methods?.formState?.errors?.newPassword?.message ||
+                            "Error",
+                        }}
+                      />
+                    )}
                     <input
                       tabIndex={2}
                       aria-required="true"
@@ -70,6 +121,22 @@ export default function ChangePassword(): JSX.Element {
                       required
                       {...methods.register("confirmNewPassword")}
                     />
+                    {methods?.formState?.errors?.confirmNewPassword
+                      ?.message && (
+                      <div
+                        className="title-infor-account"
+                        style={{
+                          marginTop: "-10px",
+                          marginBottom: "20px",
+                          color: "#EA3F30",
+                        }}
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            methods?.formState?.errors?.confirmNewPassword
+                              ?.message || "Error",
+                        }}
+                      />
+                    )}
                     <button className="submit">Change Password</button>
                   </FormWrapper>
                 </div>

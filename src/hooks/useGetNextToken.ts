@@ -7,7 +7,8 @@ import { useContractNoSigner } from './useContract';
 export function useGetNextToken(id: string, token: string, ABI: any, chainId: number) {
   const [value, setValue] = useState<string | undefined>(undefined);
   const contract = useContractNoSigner<Contract>(token, ABI, chainId);
-  useEffect(() => {
+    useEffect(() => {
+    
     (async () => {
       if (id) {
         const balance = await contract.getNextTokenId(id);

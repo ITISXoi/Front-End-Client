@@ -9,11 +9,7 @@ import BlogCard1 from "../card/BlogCard1";
 export default function BlogItem(): JSX.Element {
   const router = useRouter();
   const { id } = router.query;
-  const { data: collection } = useDetailCollection(Number(id));
-
-  const filterData = useMemo(() => {
-    return [blog[0], blog[1], blog[2]];
-  }, [collection?.type]);
+  const { data: collection } = useDetailCollection(Number(id), { enabled: !!id});
 
   const handleClick = useCallback(
     (item: CollectionType) => {
@@ -35,7 +31,7 @@ export default function BlogItem(): JSX.Element {
       <div className="tf-section sc-card-blog dark-style2">
         <div className="ibthemes-container">
           <div className="row">
-            {blog.map((item, index) => (
+            {blog?.map((item, index) => (
               <div key={item.id} className="col-lg-4 col-md-6">
                 <BlogCard1 data={item} onClick={() => handleClick(item)} />
               </div>

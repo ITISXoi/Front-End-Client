@@ -102,7 +102,6 @@ export const useFetchMoreListCustomized = (
   return useInfiniteQuery<any>(
     ["nft/list-nft-offchain", params],
     async ({ pageParam = 1 }) => {
-      console.log("pageParam", pageParam);
       const data = await getListCustomized({
         page: pageParam,
         limit: params.limit,

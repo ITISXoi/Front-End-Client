@@ -1,11 +1,11 @@
 import { Contract } from '@ethersproject/contracts';
+import { JsonRpcProvider } from '@ethersproject/providers';
 import { useMemo } from 'react';
 import { useNetwork, useSigner } from 'wagmi';
-import { JsonRpcProvider } from '@ethersproject/providers';
 
 export function useContract<T extends Contract = Contract>(address: string, ABI: any): T | null {
   const { data: signer } = useSigner();
-
+  console.log(signer, "signer");
   return useMemo(() => {
     if (!address || !ABI || !signer) {
       return null;

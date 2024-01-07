@@ -6,42 +6,50 @@ import toast from "react-hot-toast";
 import { useMutation } from "react-query";
 import * as yup from "yup";
 import FormWrapper from "../formprovider";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+interface FormValues {
+  name: string;
+  email: string;
+  password: string;
+  passwordConfirmation: string;
+}
 
 export default function Signup(): JSX.Element {
   const { push } = useRouter();
-  //   const schema = yup.object().shape({
-  //     email: yup
-  //       .string()
-  //       .trim()
-  //       .email("Invalid Email!")
-  //       .required("Email required!")
-  //       .label("Email"),
-  //     name: yup
-  //       .string()
-  //       .trim()
-  //       .min(
-  //         3,
-  //         "Username too short, please use another user name (within 3 ~ 256 characters)"
-  //       )
-  //       .max(
-  //         256,
-  //         "Username too long, please use another user name (within 3 ~ 256 characters)"
-  //       )
-  //       .label("UserName"),
-  //     password: yup
-  //       .string()
-  //       .required("Password required!")
-  //       .min(8, "Password is too short, at least 8 characrters")
-  //       .max(20, "Password is too long, no longer then 20 characters")
-  //       .label("Password"),
-  //     passwordConfirmation: yup
-  //       .string()
-  //       .required("Confirm your password")
-  //       .oneOf([yup.ref("password"), null], "New Password must match"),
-  //   });
-  const methods = useForm({
+  const schema = yup.object().shape({
+    email: yup
+      .string()
+      .trim()
+      .email("Invalid Email!")
+      .required("Email required!")
+      .label("Email"),
+    name: yup
+      .string()
+      .trim()
+      .min(
+        3,
+        "Username too short, please use another user name (within 3 ~ 256 characters)"
+      )
+      .max(
+        256,
+        "Username too long, please use another user name (within 3 ~ 256 characters)"
+      )
+      .label("UserName"),
+    password: yup
+      .string()
+      .required("Password required!")
+      .min(8, "Password is too short, at least 8 characrters")
+      .max(20, "Password is too long, no longer then 20 characters")
+      .label("Password"),
+    passwordConfirmation: yup
+      .string()
+      .required("Confirm your password")
+      .oneOf([yup.ref("password"), null], "New Password must match"),
+  });
+  const methods = useForm<FormValues>({
+    resolver: yupResolver(schema),
     mode: "onChange",
-    // resolver: yupResolver(schema),
   });
 
   const { mutate } = useMutation(registerRequest, {
@@ -76,6 +84,21 @@ export default function Signup(): JSX.Element {
                       type="text"
                       placeholder="Your Full Name"
                     />
+                    {methods?.formState?.errors?.name?.message && (
+                      <div
+                        className="title-infor-account"
+                        style={{
+                          marginTop: "-10px",
+                          marginBottom: "20px",
+                          color: "#EA3F30",
+                        }}
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            methods?.formState?.errors?.name?.message ||
+                            "Error",
+                        }}
+                      />
+                    )}
                     <input
                       id="email"
                       {...methods.register("email")}
@@ -85,24 +108,70 @@ export default function Signup(): JSX.Element {
                       placeholder="Your Email Address"
                       required
                     />
+                    {methods?.formState?.errors?.email?.message && (
+                      <div
+                        className="title-infor-account"
+                        style={{
+                          marginTop: "-10px",
+                          marginBottom: "20px",
+                          color: "#EA3F30",
+                        }}
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            methods?.formState?.errors?.email?.message ||
+                            "Error",
+                        }}
+                      />
+                    )}
                     <input
                       id="password"
                       {...methods.register("password")}
                       tabIndex={3}
                       aria-required="true"
-                      type="text"
+                      type="password"
                       placeholder="Set Your Password"
                       required
                     />
+                    {methods?.formState?.errors?.password?.message && (
+                      <div
+                        className="title-infor-account"
+                        style={{
+                          marginTop: "-10px",
+                          marginBottom: "20px",
+                          color: "#EA3F30",
+                        }}
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            methods?.formState?.errors?.password?.message ||
+                            "Error",
+                        }}
+                      />
+                    )}
                     <input
                       id="passwordConfirmation"
                       {...methods.register("passwordConfirmation")}
                       tabIndex={3}
                       aria-required="true"
-                      type="text"
+                      type="password"
                       placeholder="Confirm Your Password"
                       required
                     />
+                    {methods?.formState?.errors?.passwordConfirmation
+                      ?.message && (
+                      <div
+                        className="title-infor-account"
+                        style={{
+                          marginTop: "-10px",
+                          marginBottom: "20px",
+                          color: "#EA3F30",
+                        }}
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            methods?.formState?.errors?.passwordConfirmation
+                              ?.message || "Error",
+                        }}
+                      />
+                    )}
                     <div className="row-form style-1">
                       <label>
                         Remember me

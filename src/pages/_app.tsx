@@ -1,11 +1,13 @@
 import "@/assets/css/style.css";
 import { NextPage } from "next";
 import type { AppProps } from "next/app";
+import { Rubik, Urbanist } from "next/font/google";
 import Head from "next/head";
 import { ReactElement, ReactNode, useState } from "react";
-import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
-import { Rubik, Urbanist } from "next/font/google";
 import { Toaster } from "react-hot-toast";
+import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
+import "@rainbow-me/rainbowkit/styles.css";
+import Web3Provider from "@/utils/web3/Web3Provider";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 
@@ -43,7 +45,7 @@ function App(props: AppProps) {
       </Head>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
-          {getLayout(<Component {...pageProps} />)}
+          <Web3Provider>{getLayout(<Component {...pageProps} />)}</Web3Provider>
         </Hydrate>
       </QueryClientProvider>
       <Toaster position="top-center" reverseOrder={false} />

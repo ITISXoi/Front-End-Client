@@ -16,11 +16,23 @@ import ProductCard6 from "../card/ProductCard6";
 import FormWrapper from "../formprovider";
 import { toPng } from "html-to-image";
 import BigNumber from "bignumber.js";
-import { createNFT, draftNFT, generateNFT, updateDraftNFT } from "@/apis/nft/request";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import {
+  createNFT,
+  draftNFT,
+  generateNFT,
+  updateDraftNFT,
+} from "@/apis/nft/request";
 import { COOKIES, getCookies } from "@/libs/cookies";
 import { useMutation } from "react-query";
 import { DataURIToBlob, convertToFormData } from "@/utils/common";
 import { useDetailDraftNFT } from "@/apis/nft/queries";
+import { SMART_CONTRACT_ADDRESS } from "@/utils/constants";
+import ABIJSON from "@/contracts/ABI.json";
+import { useGetNextToken } from "@/hooks/useGetNextToken";
+import { useAccount } from "wagmi";
+import { useNFTContract } from "@/hooks/useNFTContract";
 
 const tabs = ["ALL", "ART", "MUSIC", "COLLECTIBLES", "SPORTS"];
 
@@ -44,12 +56,26 @@ export default function CustomNFT(): JSX.Element {
   const { id, draftId } = router.query;
   const [getCurrentTab, setCurrentTab] = useState<Number>(-1);
   const [isFullLoading, setFullLoading] = useState(false);
-  const { data } = useDetailCollection(Number(id));
+  const { data } = useDetailCollection(Number(id), { enabled: !!id });
   const [src, setSrc] = useState("");
   const { data: listLayer } = useListLayers(Number(id), { enabled: !!id });
   const [price, setPrice] = useState<any>({});
-  const { data: draftInfo } = useDetailDraftNFT(String(draftId));
+  const { data: draftInfo } = useDetailDraftNFT(String(draftId), {
+    enabled: !!draftId,
+  });
   const [layerId, setLayerId] = useState(-1);
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().max(256).required("Name field requrired!"),
+    description: Yup.string().max(256).required("Description field required!"),
+    remark: Yup.string().max(256).required("Remark field required!"),
+    tag: Yup.string().max(256).required("Tag field required!"),
+  });
+  const nextTokenId = useGetNextToken(
+    String(data?.collectionId),
+    SMART_CONTRACT_ADDRESS,
+    ABIJSON,
+    97
+  );
   const { data: listImageLayer } = useListImageByLayerId(
     Number(getCurrentTab),
     { enabled: getCurrentTab !== -1 }
@@ -60,6 +86,9 @@ export default function CustomNFT(): JSX.Element {
   const nowDate = new Date(timeStamp);
   const [initData, setInitData] = useState<IDesign[]>([]);
   const [imagesIds, setImageIds] = useState<string>();
+  const myContract = useNFTContract(SMART_CONTRACT_ADDRESS) as any;
+  const { address } = useAccount();
+
   const handleChooseLayer = (data: number) => {
     setLayerId(data);
   };
@@ -119,7 +148,7 @@ export default function CustomNFT(): JSX.Element {
       setSrc(uri);
     };
     gen64().catch(() => {
-      toast.error("error");
+      console.error("error");
     });
   }, [initData]);
 
@@ -201,7 +230,10 @@ export default function CustomNFT(): JSX.Element {
     });
   }, [draftInfo]);
 
-  const methods = useForm<FormValues>({ mode: "onChange" });
+  const methods = useForm<FormValues>({
+    resolver: yupResolver(validationSchema),
+    mode: "onChange",
+  });
   useEffect(() => {
     if (listLayer && listLayer?.list?.length > 0) {
       setCurrentTab(listLayer?.list[0].id);
@@ -220,7 +252,7 @@ export default function CustomNFT(): JSX.Element {
         router.push(`detail-nft?id=${data?.id}`);
       },
       onError: (error: any) => {
-        toast.error(error?.meta?.message || "Error");
+        toast.error(error?.meta?.message || "Create Draft NFT failed");
         setFullLoading(false);
       },
     }
@@ -233,7 +265,7 @@ export default function CustomNFT(): JSX.Element {
         router.push(`detail-nft?id=${data?.id}`);
       },
       onError: (error: any) => {
-        toast.error(error?.meta?.message || "Error");
+        toast.error(error?.meta?.message || "Update Draft NFT failed");
         setFullLoading(false);
       },
     });
@@ -243,13 +275,17 @@ export default function CustomNFT(): JSX.Element {
       onSuccess: (data) => {
         (async () => {
           if (!myContract) return;
-          const bigNumber = new BigNumber(price || 0).multipliedBy(10 ** 18);
+          // fake 0
+          // const bigNumber = new BigNumber(price || 0).multipliedBy(10 ** 4);
+          const bigNumber = new BigNumber(0).multipliedBy(10 ** 4);
           // const txread = await myContract.collections(collectionId);
           // console.log(txread)
           // const price = formatUnits(txread.price, 0);
           try {
+            console.log(122131231, myContract);
+
             const tx = await myContract?.mintNFT(
-              collection.collectionId,
+              data.collectionId,
               `${data.url_ipfs.toString()}.json`,
               `${Math.round(Number(bigNumber.valueOf()))}`,
               data.hashUniqueNft,
@@ -259,23 +295,13 @@ export default function CustomNFT(): JSX.Element {
                 value: `${Math.round(Number(bigNumber.valueOf()))}`,
               }
             );
-            myContract.on(
-              "NFTMinted",
-              async (
-                collectionId,
-                collectionAddress,
-                receiver,
-                uri,
-                tokenId,
-                royaltyFee
-              ) => {
-                await tx?.wait(2);
-                // setLoading(false);
-                toast.success("Mint NFT successfully!");
-                navigate(`/nft/${data?.id}`);
-              }
-            );
-            console.log(tx);
+            myContract.on("NFTMinted", async () => {
+              await tx?.wait(2);
+              // setLoading(false);
+              toast.success("Mint NFT successfully!");
+              router.push(`/nft/${data?.id}`);
+            });
+            // console.log(tx);
           } catch (error) {
             // setLoading(false);
             toast.error("Mint failed!");
@@ -286,13 +312,40 @@ export default function CustomNFT(): JSX.Element {
       },
       onError: (error: any) => {
         console.log("error", error);
-        toast.error(error?.meta?.message || "Error");
+        toast.error(error?.meta?.message || "Create NFT failed");
         // setLoading(false);
         setFullLoading(false);
       },
     }
   );
-  const handleCreateNFT = () => {};
+  console.log(address, "address");
+
+  const handleCreateNFT = () => {
+    if (getCookies(COOKIES.accessToken) === null) {
+      toast.error("You must be to login first!");
+      return;
+    }
+    setFullLoading(true);
+    mutateCreateNFT(
+      convertToFormData({
+        name: methods.getValues("name"),
+        description: methods.getValues("description"),
+        note: methods.getValues("remark"),
+        slug: methods.getValues("tag"),
+        collectionName: "",
+        properties: "",
+        price: new BigNumber(priceNft).valueOf(),
+        collectionId: data?.collectionId,
+        images: DataURIToBlob(src),
+        imageIds: `[${imagesIds}]`,
+        chainId: 97,
+        nextTokenId: nextTokenId,
+        wallet: address,
+      })
+    );
+  };
+  console.log("errors", methods?.formState?.errors);
+
   const handleCreateDraft = () => {
     if (getCookies(COOKIES.accessToken) === null) {
       toast.error("You must be to login first!");
@@ -359,7 +412,7 @@ export default function CustomNFT(): JSX.Element {
             )}
           </div>
 
-          <div className="flat-tabs tab-authors">
+          <div className="flat-tabs tab-authors" style={{ width: "100%" }}>
             <div className="author-profile flex">
               <div
                 ref={ref}
@@ -396,6 +449,20 @@ export default function CustomNFT(): JSX.Element {
                             {...methods.register("name")}
                             required
                           />
+                          {methods?.formState?.errors?.name?.message && (
+                            <div
+                              className="title-infor-account"
+                              style={{
+                                color: "#EA3F30",
+                                marginTop: "5px",
+                              }}
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                  methods?.formState?.errors?.name?.message ||
+                                  "Error",
+                              }}
+                            />
+                          )}
                         </fieldset>
                         <fieldset>
                           <h4 className="title-infor-account">Remark</h4>
@@ -405,6 +472,20 @@ export default function CustomNFT(): JSX.Element {
                             {...methods.register("remark")}
                             required
                           />
+                          {methods?.formState?.errors?.remark?.message && (
+                            <div
+                              className="title-infor-account"
+                              style={{
+                                color: "#EA3F30",
+                                marginTop: "5px",
+                              }}
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                  methods?.formState?.errors?.remark?.message ||
+                                  "Error",
+                              }}
+                            />
+                          )}
                         </fieldset>
                         <div
                           style={{
@@ -427,6 +508,20 @@ export default function CustomNFT(): JSX.Element {
                             {...methods.register("description")}
                             required
                           />
+                          {methods?.formState?.errors?.description?.message && (
+                            <div
+                              className="title-infor-account"
+                              style={{
+                                color: "#EA3F30",
+                                marginTop: "5px",
+                              }}
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                  methods?.formState?.errors?.description
+                                    ?.message || "Error",
+                              }}
+                            />
+                          )}
                         </fieldset>
                         <fieldset>
                           <h4 className="title-infor-account">Tag</h4>
@@ -436,6 +531,20 @@ export default function CustomNFT(): JSX.Element {
                             {...methods.register("tag")}
                             required
                           />
+                          {methods?.formState?.errors?.tag?.message && (
+                            <div
+                              className="title-infor-account"
+                              style={{
+                                color: "#EA3F30",
+                                marginTop: "5px",
+                              }}
+                              dangerouslySetInnerHTML={{
+                                __html:
+                                  methods?.formState?.errors?.tag?.message ||
+                                  "Error",
+                              }}
+                            />
+                          )}
                         </fieldset>
                       </div>
                     </div>
@@ -457,17 +566,10 @@ export default function CustomNFT(): JSX.Element {
                       >
                         <span>Create New NFT</span>
                       </button>
-                      <button
-                        disabled={nowDate > endDate}
-                        className={`sc-button ${
-                          nowDate > endDate ? " " : "fl-button"
-                        } pri-3 cursor-pointer`}
-                        onClick={handleCreateDraft}
-                      >
-                        <span>Draft NFT</span>
-                      </button>
-                      {draftInfo?.id && (
+
+                      {draftInfo?.id ? (
                         <button
+                          type="button"
                           disabled={nowDate > endDate}
                           className={`sc-button ${
                             nowDate > endDate ? " " : "fl-button"
@@ -475,6 +577,17 @@ export default function CustomNFT(): JSX.Element {
                           onClick={handleUpdateDraft}
                         >
                           <span>Update Draft</span>
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          disabled={nowDate > endDate}
+                          className={`sc-button ${
+                            nowDate > endDate ? " " : "fl-button"
+                          } pri-3 cursor-pointer`}
+                          onClick={handleCreateDraft}
+                        >
+                          <span>Draft NFT</span>
                         </button>
                       )}
                     </div>
@@ -510,14 +623,14 @@ export default function CustomNFT(): JSX.Element {
                 ))}
               </div>
             </div>
-            <div className="col-md-12 wrap-inner load-more text-center">
+            {/* <div className="col-md-12 wrap-inner load-more text-center">
               <Link
                 href="/authors-2"
                 className="sc-button loadmore fl-button pri-3"
               >
                 <span>Load More</span>
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>

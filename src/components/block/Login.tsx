@@ -7,10 +7,22 @@ import toast from "react-hot-toast";
 import { useMutation } from "react-query";
 import FormWrapper from "../formprovider";
 import Link from "next/link";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+
+interface FormValues {
+  email: string;
+  password: string;
+}
 
 export default function Login(): JSX.Element {
   const { push } = useRouter();
-  const methods = useForm({
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().max(256).required("Email field requrired!"),
+    password: Yup.string().max(256).required("Password field required!"),
+  });
+  const methods = useForm<FormValues>({
+    resolver: yupResolver(validationSchema),
     mode: "onChange",
   });
 
@@ -49,6 +61,21 @@ export default function Login(): JSX.Element {
                       placeholder="Your Email"
                       {...methods.register("email")}
                     />
+                    {methods?.formState?.errors?.email?.message && (
+                      <div
+                        className="title-infor-account"
+                        style={{
+                          marginTop: "-10px",
+                          marginBottom: "20px",
+                          color: "#EA3F30",
+                        }}
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            methods?.formState?.errors?.email?.message ||
+                            "Error",
+                        }}
+                      />
+                    )}
                     <input
                       id="password"
                       tabIndex={2}
@@ -58,6 +85,21 @@ export default function Login(): JSX.Element {
                       required
                       {...methods.register("password")}
                     />
+                    {methods?.formState?.errors?.password?.message && (
+                      <div
+                        className="title-infor-account"
+                        style={{
+                          marginTop: "-10px",
+                          marginBottom: "20px",
+                          color: "#EA3F30",
+                        }}
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            methods?.formState?.errors?.password?.message ||
+                            "Error",
+                        }}
+                      />
+                    )}
                     <div className="row-form style-1">
                       <label>
                         Remember me

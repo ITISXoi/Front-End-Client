@@ -1,4 +1,4 @@
-import { UseQueryOptions, useQuery } from "react-query";
+import { UseQueryOptions, useInfiniteQuery, useQuery } from "react-query";
 
 import {
   getDetailCollection,
@@ -29,6 +29,32 @@ export const useListCollection = (
     ["/collection/list", params],
     () => getListCollection(params),
     option
+  );
+};
+
+export const useFetchMoreListCollection = (
+  params: IListCollectionParams,
+  option?: any
+) => {
+  return useInfiniteQuery<any>(
+    ["/collection/list", params],
+    async ({ pageParam = 1 }) => {
+      const data = await getListCollection({
+        page: pageParam,
+        limit: params.limit,
+      });
+      return data;
+    },
+    {
+      getNextPageParam: (lastPage) => {
+        const { totalPages, currentPage } = lastPage?.pagination;
+        if (currentPage === totalPages) {
+          return;
+        } else {
+          return currentPage + 1;
+        }
+      },
+    }
   );
 };
 
