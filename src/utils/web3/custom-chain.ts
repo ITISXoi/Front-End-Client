@@ -27,7 +27,7 @@ export const bscTestnet: Chain = {
   iconUrl: '/images/wallet/bsc-logo.svg',
   iconBackground: '#fff',
   rpcUrls: {
-    default: 'https://bsctestapi.terminet.io/rpc/',
+    default: 'https://data-seed-prebsc-1-s2.binance.org:8545/',
     public: 'https://data-seed-prebsc-1-s2.binance.org:8545/',
   },
   testnet: true,

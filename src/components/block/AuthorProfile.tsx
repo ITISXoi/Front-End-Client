@@ -76,6 +76,8 @@ export default function CustomNFT(): JSX.Element {
     ABIJSON,
     97
   );
+  console.log(nextTokenId, "nextTokenId");
+  
   const { data: listImageLayer } = useListImageByLayerId(
     Number(getCurrentTab),
     { enabled: getCurrentTab !== -1 }
@@ -151,11 +153,12 @@ export default function CustomNFT(): JSX.Element {
       console.error("error");
     });
   }, [initData]);
-
+  
   const priceNft: number = Object.values(price).reduce(
     (prev, current) => new BigNumber(Number(prev)).plus(Number(current)),
     0
   ) as number;
+  
   const handleRandomNFT = async () => {
     const images: IDesign[] = [];
     const updateInitData = async () => {
@@ -275,14 +278,15 @@ export default function CustomNFT(): JSX.Element {
       onSuccess: (data) => {
         (async () => {
           if (!myContract) return;
+          console.log(price, 'price');
+          
           // fake 0
           // const bigNumber = new BigNumber(price || 0).multipliedBy(10 ** 4);
-          const bigNumber = new BigNumber(0).multipliedBy(10 ** 4);
+          const bigNumber = new BigNumber(priceNft || 0).multipliedBy(10 ** 4);
           // const txread = await myContract.collections(collectionId);
           // console.log(txread)
           // const price = formatUnits(txread.price, 0);
           try {
-            console.log(122131231, myContract);
 
             const tx = await myContract?.mintNFT(
               data.collectionId,
@@ -295,7 +299,7 @@ export default function CustomNFT(): JSX.Element {
                 value: `${Math.round(Number(bigNumber.valueOf()))}`,
               }
             );
-            myContract.on("NFTMinted", async () => {
+            myContract.on('NFTMinted', async (collectionId, collectionAddress, receiver, uri, tokenId, royaltyFee) => {
               await tx?.wait(2);
               // setLoading(false);
               toast.success("Mint NFT successfully!");
@@ -318,7 +322,6 @@ export default function CustomNFT(): JSX.Element {
       },
     }
   );
-  console.log(address, "address");
 
   const handleCreateNFT = () => {
     if (getCookies(COOKIES.accessToken) === null) {
@@ -344,7 +347,6 @@ export default function CustomNFT(): JSX.Element {
       })
     );
   };
-  console.log("errors", methods?.formState?.errors);
 
   const handleCreateDraft = () => {
     if (getCookies(COOKIES.accessToken) === null) {
