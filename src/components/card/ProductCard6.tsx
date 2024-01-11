@@ -63,7 +63,9 @@ export default function ProductCard6({
             <div className="info">
               <span>Price</span>
               <h6>
-                <Link href="/authors-2">1234.56 MATIC</Link>
+                <Link href="/authors-2">
+                  {Number(data?.price).toFixed(5)} tBNB
+                </Link>
               </h6>
             </div>
           </div>

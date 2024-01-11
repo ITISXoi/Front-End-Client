@@ -59,7 +59,6 @@ export const draftNFT = async (
 export const updateDraftNFT = async (
   params: IUpdateDraftINFTParams
 ): Promise<IUpdateDraftINFTResponse> => {
-  console.log("params", params.data);
   const res: any = await request({
     url: `nft/update-offchain/${params.id}`,
     method: "POST",

@@ -8,7 +8,6 @@ import AuthorCard1 from "../card/AuthorCard1";
 
 export default function TopArtist(): JSX.Element {
   const { data: dataArtist } = useListUserArtist();
-  console.log("dataArtist", dataArtist);
   return (
     <>
       <section className="tf-section live-auctions style2 no-pt-mb tl-pb-0">

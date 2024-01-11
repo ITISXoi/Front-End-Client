@@ -1,18 +1,20 @@
 "use client";
-import { useDetailDraftNFT, useListAllNFT } from "@/apis/nft/queries";
-import Image from "next/image";
+import { useDetailNFT, useListAllNFT } from "@/apis/nft/queries";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import ItemDetailsTab from "../element/ItemDetailsTab";
+import { useEffect, useState } from "react";
 
-export default function ItemDetails1() {
+export default function ItemDetailsNFT() {
   const router = useRouter();
   const { id } = router.query;
   const { data: items } = useListAllNFT({
     page: 1,
     limit: 4,
   });
-  const { data } = useDetailDraftNFT(String(id), { enabled: !!id });
+  const { data } = useDetailNFT(String(id), { enabled: !!id });
+  console.log("data", data);
+
   const renderer = ({
     days,
     hours,
@@ -36,6 +38,12 @@ export default function ItemDetails1() {
       );
     }
   };
+
+  const imageLayer = data?.attributes
+    ? JSON.parse(String(data?.attributes))
+    : [];
+
+  console.log("imageLayer", imageLayer);
 
   return (
     <>
@@ -82,10 +90,10 @@ export default function ItemDetails1() {
                           />
                         </div>
                         <div className="info">
-                          <span>Create By</span>
+                          <span>Owner</span>
                           <h6>
                             <Link href="/authors-2">
-                              {data?.creatorUserName}
+                              {data?.owner.slice(0, 20)}.....
                             </Link>
                           </h6>
                         </div>
@@ -145,7 +153,7 @@ export default function ItemDetails1() {
                     </Link>
                   )}
                 </div>
-                <ItemDetailsTab data={data?.images} />
+                <ItemDetailsTab data={imageLayer} />
               </div>
             </div>
           </div>

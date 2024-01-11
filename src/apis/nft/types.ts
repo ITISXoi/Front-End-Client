@@ -28,6 +28,9 @@ export interface INFT {
   attributes: string;
   price: string;
   type: string;
+  creatorImageUrl: string;
+  collectionImageUrl: string;
+  collectionKeyId: number
 }
 export interface INFTDraft {
   collectionKeyId: string;
@@ -51,6 +54,7 @@ export interface INFTDraft {
   creatorImageUrl: string;
   creatorUserName: string;
   collectionId: number;
+  status: string;
 }
 export interface IListNFT {
   data: INFT[];

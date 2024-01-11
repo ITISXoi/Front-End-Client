@@ -22,14 +22,14 @@ export default function ProductCard18({ data }: Props): JSX.Element {
     <>
       <div className="sc-card-product">
         <div className="card-media">
-          <Link href={`/detail-nft?id=${data.id}`}>
+          <Link href={`/detail-nft?id=${data?.id}`}>
             <img
               style={{ aspectRatio: "1/1", objectFit: "cover" }}
-              src={data.imageUrl}
+              src={data?.imageUrl}
               alt="Image"
             />
           </Link>
-          {data.status === "Coming Soon" ? (
+          {data?.status === "Coming Soon" ? (
             <div className="coming-soon">coming soon</div>
           ) : undefined}
 
@@ -39,24 +39,26 @@ export default function ProductCard18({ data }: Props): JSX.Element {
               isHeartToggle === 1 ? "active" : ""
             } `}
           >
-            <span className="number-like">{data.totalNfts || 100}</span>
+            <span className="number-like">{data?.totalNfts || 100}</span>
           </button>
         </div>
         <div className="card-title">
           <h5 className="style2">
-            <Link href={`/detail-collection?id=${data.id}`}>{data.name}</Link>
+            <Link href={`/detail-collection?id=${data?.id}`}>{data?.name}</Link>
           </h5>
-          <div className="tags">{data.type}</div>
+          <div className="tags">{data?.type}</div>
         </div>
         <div className="meta-info">
           <div className="author">
             <div className="avatar">
-              <img height={100} width={100} src={data.imageUrl} alt="Image" />
+              <img height={100} width={100} src={data?.imageUrl} alt="Image" />
             </div>
             <div className="info">
               <span>Price</span>
               <h6>
-                <Link href="/authors-2">{data.price} MATIC</Link>
+                <Link href="/authors-2">
+                  {Number(data?.price).toFixed(5)} tBNB
+                </Link>
               </h6>
             </div>
           </div>

@@ -1,9 +1,6 @@
 import { COOKIES, getCookies } from "@/libs/cookies";
 import { API_URL } from "@/utils/constants";
-import axios, {
-  AxiosResponse,
-  InternalAxiosRequestConfig
-} from "axios";
+import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { ISuccessResponse } from "./types";
 
 export const request = axios.create({
@@ -16,9 +13,14 @@ const handleError = (error: any) => {
   const originalRequest = error.config;
   const refreshToken = getCookies(COOKIES.refreshToken);
 
-  const isExpired = error.response.status === 400 && data.error?.message === 'TokenExpire';
+  const isExpired =
+    error.response.status === 400 && data.error?.message === "TokenExpire";
 
-  if ((error.response.status === 401 || isExpired) && refreshToken && !originalRequest._retry) {
+  if (
+    (error.response.status === 401 || isExpired) &&
+    refreshToken &&
+    !originalRequest._retry
+  ) {
     originalRequest._retry = true;
     return request(originalRequest);
   }
@@ -33,7 +35,7 @@ const handleError = (error: any) => {
   //     location.href = "/login";
   //   }
   // }
-  return Promise.reject(data?.data);
+  return Promise.reject(data);
 };
 
 const handleSuccess = (res: AxiosResponse<ISuccessResponse>) => {

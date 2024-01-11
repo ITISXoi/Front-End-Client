@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function ItemDetailsTab(props: Props): JSX.Element {
-  const { data } = props;
+  const { data = [] } = props;
 
   return (
     <>
@@ -45,7 +45,9 @@ export default function ItemDetailsTab(props: Props): JSX.Element {
                         <div className="author-infor">
                           <div className="name">
                             <h6>
-                              <Link href="/authors-2">{item?.name}</Link>
+                              <Link href="/authors-2">
+                                {item?.name || item?.imageName}
+                              </Link>
                             </h6>
                           </div>
                           <span className="time">{item?.layerName}</span>
@@ -53,8 +55,13 @@ export default function ItemDetailsTab(props: Props): JSX.Element {
                       </div>
                     </div>
                     <div className="price">
-                      <h5>{item?.price} MATIC</h5>
-                      <span>{item?.percent} % have this trait</span>
+                      <h5>
+                        {Number(item?.price || item?.imagePrice).toFixed(5)}{" "}
+                        tBNB
+                      </h5>
+                      <span>
+                        {item?.percent || item?.imagePercent} % have this trait
+                      </span>
                     </div>
                   </div>
                 </li>

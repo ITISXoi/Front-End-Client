@@ -9,11 +9,15 @@ interface Props {
     SetStateAction<{
       page: number;
       limit: number;
+      type?: string;
+      collectionKeyId?: number;
     }>
   >;
   params: {
     page: number;
     limit: number;
+    type?: string;
+    collectionKeyId?: number;
   };
 }
 
@@ -53,13 +57,13 @@ const DropDownFilterType = (props: Props) => {
               onClick={() => {
                 selectHandler(item.name);
                 if (item.name === "All Type") {
-                  if (params.collectionId === 0) {
+                  if (params.collectionKeyId === 0) {
                     setParams({ page: params.page, limit: params.limit });
                   } else {
                     setParams({
                       page: params.page,
                       limit: params.limit,
-                      collectionId: params.collectionId,
+                      collectionKeyId: params.collectionKeyId,
                     });
                   }
                 } else {

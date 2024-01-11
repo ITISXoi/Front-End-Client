@@ -16,10 +16,8 @@ export function useContract<T extends Contract = Contract>(
     try {
       return new Contract(address, ABI, signer);
     } catch (error) {
-      console.error("Failed To Get Contract", error);
       return null;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address, ABI, signer]) as T;
 }
 

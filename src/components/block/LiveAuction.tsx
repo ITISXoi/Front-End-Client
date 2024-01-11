@@ -10,7 +10,7 @@ export default function LiveAuction(): JSX.Element {
             <div className="col-md-12">
               <div className="heading-live-auctions">
                 <h2 className="tf-title pb-18">New NFT</h2>
-                <Link href="" className="exp style2">
+                <Link href="/list-all-nft" className="exp style2">
                   EXPLORE MORE
                 </Link>
               </div>

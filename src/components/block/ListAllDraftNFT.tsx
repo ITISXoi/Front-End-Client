@@ -5,7 +5,7 @@ import {
   useListCustomized,
 } from "@/apis/nft/queries";
 import { product1 } from "@/data/product";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ProductCard18 from "../card/ProductCard18";
 import DropDownFilter from "../dropdown/DropDownFilter";
 import DropDownFilterType from "../dropdown/DropDownFilterType";
@@ -25,18 +25,22 @@ export default function ListAllDraftNFT() {
   const [params, setParams] = useState<{
     page: number;
     limit: number;
+    type?: string;
+    collectionKeyId?: number;
   }>({
     page: 1,
     limit: 8,
   });
-  const { data: dataNFTDraft, fetchNextPage } =
-    useFetchMoreListCustomized(params);
+  const {
+    data: dataNFTDraft,
+    fetchNextPage,
+    refetch,
+  } = useFetchMoreListCustomized(params);
   const { data: metadataCollection } = useMetadataCollection();
 
   const handleLoadmore = () => {
     fetchNextPage();
   };
-
   const listCollection = useMemo(() => {
     let dataDrop = [{ id: 0, name: "All Collection" }];
     metadataCollection?.map((item: any) => {
@@ -74,7 +78,7 @@ export default function ListAllDraftNFT() {
               <div className="flat-tabs explore-tab">
                 <div className="content-tab mg-t-40">
                   <div className="row">
-                    {dataNFTDraft?.pages.map((item: any) => (
+                    {dataNFTDraft?.pages?.map((item: any) => (
                       <>
                         {item.data?.list?.map((record: any) => (
                           <div

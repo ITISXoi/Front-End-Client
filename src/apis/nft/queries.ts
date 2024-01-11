@@ -103,6 +103,7 @@ export const useFetchMoreListCustomized = (
     ["nft/list-nft-offchain", params],
     async ({ pageParam = 1 }) => {
       const data = await getListCustomized({
+        ...params,
         page: pageParam,
         limit: params.limit,
       });

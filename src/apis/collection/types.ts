@@ -70,6 +70,9 @@ export interface IImageLayer {
   layerIndex?: number;
   layerName: string;
   percent: string;
+  imagePercent: string;
+  imagePrice: string;
+  imageName: string;
 }
 
 export interface IListImageLayerParams extends Paging {

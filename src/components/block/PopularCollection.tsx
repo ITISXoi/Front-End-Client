@@ -14,7 +14,6 @@ export default function PopularCollection(): JSX.Element {
     page: 1,
     limit: 10,
   });
-  console.log("data", data);
   return (
     <>
       <section className="tf-section live-auctions style4 no-pt-mb mobie-style">

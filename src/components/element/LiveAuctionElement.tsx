@@ -10,10 +10,11 @@ import ProductCard18 from "../card/ProductCard18";
 
 export default function LiveAuctionElement(): JSX.Element {
   const { data: dataNFTDraft } = useListCustomized({
-    type: "draft",
+    type: "minted",
     page: 1,
     limit: 8,
   });
+
   return (
     <>
       <div className="col-md-12">

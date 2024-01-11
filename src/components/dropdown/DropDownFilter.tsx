@@ -9,11 +9,15 @@ interface Props {
     SetStateAction<{
       page: number;
       limit: number;
+      type?: string;
+      collectionKeyId?: number;
     }>
   >;
   params: {
     page: number;
     limit: number;
+    type?: string;
+    collectionKeyId?: number;
   };
 }
 
@@ -31,7 +35,7 @@ const DropDownFilter = (props: Props) => {
   const selectHandler = (select: string) => {
     setCurrentSelect(select);
     setHover(false);
-  };
+  };  
   return (
     <>
       <div id={id} className="dropdown" onMouseLeave={dropdownLeaveHandler}>
@@ -63,7 +67,7 @@ const DropDownFilter = (props: Props) => {
                     });
                   }
                 } else {
-                  setParams({ ...params, collectionId: item.id });
+                  setParams({ ...params, collectionKeyId: item.id });
                 }
               }}
               key={index}

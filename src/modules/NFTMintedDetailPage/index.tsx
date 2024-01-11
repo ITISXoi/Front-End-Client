@@ -1,4 +1,4 @@
-import ItemDetails1 from "@/components/block/ItemDetails1";
+import ItemDetailsNFT from "@/components/block/ItemDetailsNFT";
 import LiveAuction from "@/components/block/LiveAuction";
 import Breadcrumb from "@/components/breadcrumb";
 import Layout from "@/layout";
@@ -21,16 +21,16 @@ export const metadata: Metadata = {
   title: "Mint Cuong",
 };
 
-export const NFTDetailPage: PageComponent = () => {
+export const NFTMintedDetailPage: PageComponent = () => {
   return (
     <>
       <Breadcrumb data={item} />
-      <ItemDetails1 />
+      <ItemDetailsNFT />
       <LiveAuction />
     </>
   );
 };
 
-NFTDetailPage.getLayout = function getLayout(page) {
+NFTMintedDetailPage.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };

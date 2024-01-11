@@ -117,17 +117,6 @@ export default function Explore2() {
                 </div>
               </div>
             </div>
-            {/* {product1.length > getItem.end && (
-              <div className="col-md-12 wrap-inner load-more text-center">
-                <button
-                  onClick={loadMoreHandler}
-                  id="loadmore"
-                  className="sc-button loadmore fl-button pri-3"
-                >
-                  <span>Load More</span>
-                </button>
-              </div>
-            )} */}
           </div>
         </div>
       </div>

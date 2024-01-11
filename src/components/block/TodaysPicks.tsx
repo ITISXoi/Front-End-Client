@@ -10,7 +10,7 @@ export default function TodaysPicks({
   style?: string;
 }): JSX.Element {
   const { data: dataNFTDraft } = useListCustomized({
-    type: "draft",
+    type: "minted",
     page: 1,
     limit: 8,
   });
@@ -23,7 +23,7 @@ export default function TodaysPicks({
             <div className="col-md-12">
               <div className="heading-live-auctions mg-bt-21">
                 <h2 className="tf-title pad-l-7">New NFTs</h2>
-                <Link href="/explore-3" className="exp style2">
+                <Link href="/list-all-nft" className="exp style2">
                   EXPLORE MORE
                 </Link>
               </div>

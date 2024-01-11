@@ -76,8 +76,7 @@ export default function CustomNFT(): JSX.Element {
     ABIJSON,
     97
   );
-  console.log(nextTokenId, "nextTokenId");
-  
+
   const { data: listImageLayer } = useListImageByLayerId(
     Number(getCurrentTab),
     { enabled: getCurrentTab !== -1 }
@@ -153,12 +152,12 @@ export default function CustomNFT(): JSX.Element {
       console.error("error");
     });
   }, [initData]);
-  
+
   const priceNft: number = Object.values(price).reduce(
     (prev, current) => new BigNumber(Number(prev)).plus(Number(current)),
     0
   ) as number;
-  
+
   const handleRandomNFT = async () => {
     const images: IDesign[] = [];
     const updateInitData = async () => {
@@ -278,16 +277,11 @@ export default function CustomNFT(): JSX.Element {
       onSuccess: (data) => {
         (async () => {
           if (!myContract) return;
-          console.log(price, 'price');
-          
           // fake 0
-          // const bigNumber = new BigNumber(price || 0).multipliedBy(10 ** 4);
           const bigNumber = new BigNumber(priceNft || 0).multipliedBy(10 ** 4);
           // const txread = await myContract.collections(collectionId);
-          // console.log(txread)
           // const price = formatUnits(txread.price, 0);
           try {
-
             const tx = await myContract?.mintNFT(
               data.collectionId,
               `${data.url_ipfs.toString()}.json`,
@@ -299,25 +293,26 @@ export default function CustomNFT(): JSX.Element {
                 value: `${Math.round(Number(bigNumber.valueOf()))}`,
               }
             );
-            myContract.on('NFTMinted', async (collectionId, collectionAddress, receiver, uri, tokenId, royaltyFee) => {
-              await tx?.wait(2);
-              // setLoading(false);
+            // myContract.on('NFTMinted', async (collectionId, collectionAddress, receiver, uri, tokenId, royaltyFee) => {
+            //   await tx?.wait(2);
+            //   // setLoading(false);
+            //   toast.success("Mint NFT successfully!");
+            //   router.push(`/nft/${data?.id}`);
+            // });
+            const timeoutId = setTimeout(() => {
               toast.success("Mint NFT successfully!");
-              router.push(`/nft/${data?.id}`);
-            });
-            // console.log(tx);
+              router.push(`/detail-nft-minted?id=${data?.id}`);
+            }, 3000);
           } catch (error) {
-            // setLoading(false);
             toast.error("Mint failed!");
-            console.log(error);
             setFullLoading(false);
           }
         })();
       },
       onError: (error: any) => {
         console.log("error", error);
+
         toast.error(error?.meta?.message || "Create NFT failed");
-        // setLoading(false);
         setFullLoading(false);
       },
     }
@@ -625,14 +620,6 @@ export default function CustomNFT(): JSX.Element {
                 ))}
               </div>
             </div>
-            {/* <div className="col-md-12 wrap-inner load-more text-center">
-              <Link
-                href="/authors-2"
-                className="sc-button loadmore fl-button pri-3"
-              >
-                <span>Load More</span>
-              </Link>
-            </div> */}
           </div>
         </div>
       </section>
