@@ -3,9 +3,8 @@ import { useDetailNFT, useListAllNFT } from "@/apis/nft/queries";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import ItemDetailsTab from "../element/ItemDetailsTab";
-import { useEffect, useState } from "react";
 
-export default function ItemDetailsNFT() {
+export default function ItemDetails1() {
   const router = useRouter();
   const { id } = router.query;
   const { data: items } = useListAllNFT({
@@ -13,8 +12,6 @@ export default function ItemDetailsNFT() {
     limit: 4,
   });
   const { data } = useDetailNFT(String(id), { enabled: !!id });
-  console.log("data", data);
-
   const renderer = ({
     days,
     hours,
@@ -38,12 +35,6 @@ export default function ItemDetailsNFT() {
       );
     }
   };
-
-  const imageLayer = data?.attributes
-    ? JSON.parse(String(data?.attributes))
-    : [];
-
-  console.log("imageLayer", imageLayer);
 
   return (
     <>
@@ -90,10 +81,10 @@ export default function ItemDetailsNFT() {
                           />
                         </div>
                         <div className="info">
-                          <span>Owner</span>
+                          <span>Create By</span>
                           <h6>
                             <Link href="/authors-2">
-                              {data?.owner.slice(0, 20)}.....
+                              {data?.owner?.slice(0, 20)}...
                             </Link>
                           </h6>
                         </div>
@@ -144,16 +135,8 @@ export default function ItemDetailsNFT() {
                       </div>
                     </div>
                   </div>
-                  {data?.type === "draft" && (
-                    <Link
-                      href={`/create-nft?id=${data?.collectionKeyId}&draftId=${data?.id}`}
-                      className="sc-button loadmore style bag fl-button pri-3"
-                    >
-                      <span>Update Draft</span>
-                    </Link>
-                  )}
                 </div>
-                <ItemDetailsTab data={imageLayer} />
+                <ItemDetailsTab data={data?.images} />
               </div>
             </div>
           </div>

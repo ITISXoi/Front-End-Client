@@ -30,7 +30,8 @@ export interface INFT {
   type: string;
   creatorImageUrl: string;
   collectionImageUrl: string;
-  collectionKeyId: number
+  collectionKeyId: number;
+  images: IImageLayer[];
 }
 export interface INFTDraft {
   collectionKeyId: string;
