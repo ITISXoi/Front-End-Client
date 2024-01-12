@@ -45,7 +45,7 @@ export default function Signup(): JSX.Element {
     passwordConfirmation: yup
       .string()
       .required("Confirm your password")
-      .oneOf([yup.ref("password"), null], "New Password must match"),
+      .oneOf([yup.ref("password")], "New Password must match"),
   });
   const methods = useForm<FormValues>({
     resolver: yupResolver(schema),

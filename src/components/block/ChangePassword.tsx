@@ -32,7 +32,7 @@ export default function ChangePassword(): JSX.Element {
     confirmNewPassword: yup
       .string()
       .required("Confirm your password")
-      .oneOf([yup.ref("newPassword"), null], "New Password must match"),
+      .oneOf([yup.ref("newPassword")], "New Password must match"),
   });
   const methods = useForm({
     resolver: yupResolver(validationSchema),
