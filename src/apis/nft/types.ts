@@ -3,37 +3,35 @@ import { PagedMeta, Paging } from "@/types/util.types";
 import { IImageLayer } from "../collection/types";
 
 export interface INFT {
-  list: {
-    id: string;
-    token_address: string;
-    tokenId: string;
-    owner: string;
-    block_number: string;
-    block_number_minted: string;
-    token_hash: string;
-    amount: string;
-    contract_type: string;
-    contractAddress: string;
-    name: string;
-    symbol: string;
-    tokenUri: string;
-    metadata: string;
-    last_token_uri_sync: string;
-    last_metadata_sync: string;
-    minter_address: string;
-    imageUrl: string;
-    description: string;
-    collectionName: string;
-    chainId: string;
-    status: string;
-    attributes: string;
-    price: string;
-    type: string;
-    creatorImageUrl: string;
-    collectionImageUrl: string;
-    collectionKeyId: number;
-    images: IImageLayer[];
-  }[];
+  id: string;
+  token_address: string;
+  tokenId: string;
+  owner: string;
+  block_number: string;
+  block_number_minted: string;
+  token_hash: string;
+  amount: string;
+  contract_type: string;
+  contractAddress: string;
+  name: string;
+  symbol: string;
+  tokenUri: string;
+  metadata: string;
+  last_token_uri_sync: string;
+  last_metadata_sync: string;
+  minter_address: string;
+  imageUrl: string;
+  description: string;
+  collectionName: string;
+  chainId: string;
+  status: string;
+  attributes: string;
+  price: string;
+  type: string;
+  creatorImageUrl: string;
+  collectionImageUrl: string;
+  collectionKeyId: number;
+  images: IImageLayer[];
 }
 export interface INFTDraft {
   collectionKeyId: string;
@@ -60,7 +58,7 @@ export interface INFTDraft {
   status: string;
 }
 export interface IListNFT {
-  data: INFT;
+  data: INFT[];
   meta: PagedMeta;
 }
 export interface IListDraftNFT {
