@@ -1,15 +1,17 @@
-import { PagedMeta, Paging } from '@/types/util.types';
+import { PagedMeta, Paging } from "@/types/util.types";
 
 export interface IUserArtist {
-  id: number;
-  fullName: string;
-  email: string;
-  avatarUrl: string;
-  idActive: number;
+  list: {
+    id: number;
+    fullName: string;
+    email: string;
+    avatarUrl: string;
+    idActive: number;
+  }[];
 }
 
 export interface IListUserArtist {
-  data: IUserArtist[];
+  data: IUserArtist;
   meta: PagedMeta;
 }
 
