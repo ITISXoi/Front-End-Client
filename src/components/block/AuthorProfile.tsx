@@ -278,7 +278,7 @@ export default function CustomNFT(): JSX.Element {
         (async () => {
           if (!myContract) return;
           // fake 0
-          const bigNumber = new BigNumber(priceNft || 0).multipliedBy(10 ** 4);
+          const bigNumber = new BigNumber(priceNft || 0).multipliedBy(10 ** 18);
           // const txread = await myContract.collections(collectionId);
           // const price = formatUnits(txread.price, 0);
           try {
